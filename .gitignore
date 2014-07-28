@@ -1,8 +1,13 @@
 /bootstrap/compiled.php
 /vendor
+node_modules/
+public/css/main.css
+public/js/master.js
+
 composer.phar
 composer.lock
 .idea
+.sass-cache
 .env.*.php
 .env.php
 .DS_Store

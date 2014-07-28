@@ -13,6 +13,8 @@
 </head>
 <body>
 
+    <input type="hidden" id="js-included-modules" value="@yield('js')" />
+
     <div class="container-fluid">
         @yield('content')
     </div>
