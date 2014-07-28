@@ -2,13 +2,32 @@
 
 use Eloquent;
 use Illuminate\Auth\UserInterface;
+use Task\Service\Presenter\Presentable;
 
 /**
  * Task\Model\User
  *
+ * @property integer $id
+ * @property string $first_name
+ * @property string $last_name
+ * @property string $email
+ * @property integer $logout_at
+ * @property \Carbon\Carbon $created_at
+ * @property \Carbon\Carbon $updated_at
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereId($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereFirstName($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereLastName($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereEmail($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereLogoutAt($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereCreatedAt($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\User whereUpdatedAt($value) 
  */
 class User extends Eloquent implements UserInterface
 {
+    use Presentable;
+
+    protected $presenterName = 'Task\Model\User\Presenter';
+
 	/**
 	 * The database table used by the model.
 	 *
