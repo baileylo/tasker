@@ -30,6 +30,16 @@
             {{ Form::select('type', Task\Model\Ticket\Type::readable(), null, ['class' => 'form-control']) }}
         </div>
 
+        <div class="form-group @if($errors->has('assignee')) has-error @endif">
+            {{ Form::label('Assign To') }}
+
+            @if($errors->has('assignee'))
+                <p class="text-danger">{{ $errors->first('assignee') }}</p>
+            @endif
+
+            {{ Form::email('assignee', null, ['class' => 'form-control', 'placeholder' => 'joe@blow.com']) }}
+        </div>
+
         <div class="form-group @if($errors->has('description')) has-error @endif">
             {{ Form::label('Description') }}
 

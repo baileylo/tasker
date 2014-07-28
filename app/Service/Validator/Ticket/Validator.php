@@ -12,6 +12,7 @@ class Validator
     protected $rules = [
         'name' => 'required|min:2|max:255',
         'description' => 'required|min:20',
+        'assignee' => 'email|exists:users,email',
         'due_date' => [],
         'type' => []
     ];

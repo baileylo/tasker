@@ -1,8 +1,10 @@
 <?php namespace Task\Controller\Ticket;
 
 use Controller, View, Input, Auth, Redirect;
+use Illuminate\Support\MessageBag;
 use Task\Model\Project;
 use Task\Model\Ticket;
+use Task\Model\User\RepositoryInterface as UserRepo;
 use Task\Service\Validator\Ticket\Validator;
 
 class Create extends Controller
@@ -10,9 +12,13 @@ class Create extends Controller
     /** @var \Task\Service\Validator\Ticket\Validator  */
     protected $validator;
 
-    public function __construct(Validator $validator)
+    /** @var \Task\Model\User\RepositoryInterface  */
+    protected $userRepo;
+
+    public function __construct(Validator $validator, UserRepo $userRepo)
     {
         $this->validator = $validator;
+        $this->userRepo = $userRepo;
     }
 
     public function view(Project $project)
@@ -22,9 +28,14 @@ class Create extends Controller
 
     public function handle(Project $project)
     {
-        $data = Input::only(['description', 'name', 'type', 'due_date']);
+        $data = Input::only(['description', 'name', 'type', 'due_date', 'assignee']);
 
         if ($errors = $this->validator->getErrors($data)) {
+            return Redirect::back()->withInput()->withErrors($errors);
+        }
+
+        if ($data['assignee'] && !$assignee = $this->userRepo->findByEmail($data['assignee'])) {
+            $errors = new MessageBag(['assignee' => ['Unable to find assignee by email']]);
             return Redirect::back()->withInput()->withErrors($errors);
         }
 
@@ -33,9 +44,13 @@ class Create extends Controller
         $ticket->project()->associate($project);
         $ticket->description = $data['description'];
         $ticket->name = $data['name'];
-        $ticket->type = $data['type'];
+        $ticket->type = intval($data['type']);
         $ticket->status = Ticket\Status::WAITING;
-        $ticket->due_at = $data['due_date'];
+        $ticket->due_at = $data['due_date']?: null;
+
+        if ($data['assignee']) {
+            $ticket->assignee()->associate($assignee);
+        }
 
         $ticket->save();
 

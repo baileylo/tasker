@@ -10,6 +10,7 @@ use Task\Service\Presenter\Presentable;
  *
  * @property-read \Task\Model\User $reporter
  * @property-read \Task\Model\Project $project
+ * @property-read \Task\Model\User $assignee
  * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\Comment[] $comments
  * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\User[] $subscribers
  * @property integer $id
@@ -17,6 +18,7 @@ use Task\Service\Presenter\Presentable;
  * @property string $description
  * @property integer $type
  * @property integer $reporter_id
+ * @property integer $assignee_id
  * @property integer $project_id
  * @property \Carbon\Carbon $due_at
  * @property \Carbon\Carbon $created_at
@@ -27,7 +29,8 @@ use Task\Service\Presenter\Presentable;
  * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereDescription($value) 
  * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereType($value) 
  * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereReporterId($value) 
- * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereProjectId($value) 
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereProjectId($value)
+ * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereAssigneeId($value)
  * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereDueAt($value) 
  * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereCreatedAt($value) 
  * @method static \Illuminate\Database\Query\Builder|\Task\Model\Ticket whereUpdatedAt($value) 
@@ -55,6 +58,14 @@ class Ticket extends Eloquent
     public function reporter()
     {
         return $this->belongsTo('Task\Model\User', 'reporter_id');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function assignee()
+    {
+        return $this->belongsTo('Task\Model\User', 'assignee_id');
     }
 
     /**
