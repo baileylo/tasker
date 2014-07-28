@@ -2,8 +2,8 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-10">
-        <h1>Create Project</h1>
+    <div class="col-lg-12">
+        <h1><a href="{{{ route('project.view', $project->id) }}}">{{ $project->name }}</a> &mdash; Open Ticket</h1>
     </div>
 </div>
 
