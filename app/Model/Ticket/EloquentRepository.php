@@ -76,7 +76,9 @@ class EloquentRepository implements RepositoryInterface
      */
     public function findsProjectsMostRecentClosedTickets($projectId, array $relationships = [])
     {
-        return $this->getQueryForProjectsTicketsAndStatus(Status::CLOSED, intval($projectId), $relationships)
+        return $this->orm->with($relationships)
+            ->whereProjectId($projectId)
+            ->whereRaw('(status & 8) = 0')
             ->orderBy('updated_at', 'desc')
             ->get();
     }
