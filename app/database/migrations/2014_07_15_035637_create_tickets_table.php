@@ -20,7 +20,7 @@ class CreateTicketsTable extends Migration {
             $table->unsignedInteger('type');
             $table->unsignedInteger('reporter_id');
             $table->unsignedInteger('project_id');
-            $table->date('due_at');
+            $table->date('due_at')->nullable();
 			$table->timestamps();
 		});
 	}
