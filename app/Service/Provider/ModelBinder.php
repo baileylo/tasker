@@ -15,6 +15,11 @@ class ModelBinder extends ServiceProvider
             'Task\Model\Project\RepositoryInterface',
             'Task\Model\Project\EloquentRepository'
         );
+
+        $this->app->bind(
+            'Task\Model\Ticket\RepositoryInterface',
+            'Task\Model\Ticket\EloquentRepository'
+        );
     }
 
 } 

@@ -19,6 +19,13 @@ class RouteBinder extends ServiceProvider
             return $projectRepo->findById($projectId);
         });
 
+        /** @var \Task\Model\Ticket\RepositoryInterface $projectRepo */
+        $ticketRepo = $this->app->make('Task\Model\Ticket\RepositoryInterface');
+
+        $this->app->make('Illuminate\Routing\Router')->bind('ticketId', function($ticketId) use ($ticketRepo) {
+            return $ticketRepo->findById($ticketId);
+        });
+
     }
 
 }
