@@ -34,6 +34,7 @@ class Create extends Controller
         $ticket->description = $data['description'];
         $ticket->name = $data['name'];
         $ticket->type = $data['type'];
+        $ticket->status = Ticket\Status::WAITING;
         $ticket->due_at = $data['due_date'];
 
         $ticket->save();
