@@ -12,7 +12,15 @@ Route::post('/auth/logout', ['uses' => 'Task\Controller\Auth@logout']);
 
 Route::get('/auth/login', ['uses' => 'Task\Controller\Auth@login']);
 
-Route::get('/project/{projectSlug}', ['uses' => 'Task\Controller\Project\View@show', 'as' => 'project.view']);
+Route::get('/project/{projectId}', ['uses' => 'Task\Controller\Project\View@show', 'as' => 'project.view']);
+
+Route::get('/project/{projectId}/ticket/create', ['uses' => 'Task\Controller\Ticket\Create@view', 'as' => 'ticket.create']);
+Route::post('/project/{projectId}/ticket/create', ['uses' => 'Task\Controller\Ticket\Create@handle', 'as' => 'ticket.create']);
+
+Route::get('/project/{objectId}/ticket/{ticketId}/view', ['uses' => 'Task\Controller\Ticket\View@show', 'as' => 'ticket.view']);
+
+
+Route::post('/project/{objectId}/ticket/{ticketId}/close', ['uses' => 'Task\Controller\Ticket\Manager@close', 'as' => 'ticket.close']);
 
 ## Admin Routes
 Route::get('/admin', ['uses' => 'Task\Controller\Admin\Project\Overview@index', 'as' => 'admin.project.index']);

@@ -1,6 +1,5 @@
 <?php namespace Task\Model\Project;
 
-use string;
 use Task\Model\Project;
 
 class EloquentRepository implements RepositoryInterface
