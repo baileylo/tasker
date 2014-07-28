@@ -6,7 +6,8 @@
 	"require": {
 		"laravel/framework": "4.2.*",
         "barryvdh/laravel-ide-helper": "1.*",
-        "guzzlehttp/guzzle": "4.1.2"
+        "guzzlehttp/guzzle": "4.1.2",
+        "doctrine/dbal": "2.4.2"
 	},
 	"autoload": {
 		"classmap": [
