@@ -45,7 +45,7 @@
                 <p class="text-danger">{{ $errors->first('status') }}</p>
                 @endif
 
-                {{ Form::select('type', Task\Model\Ticket\Status::readableClosed(), null, ['class' => 'form-control']) }}
+                {{ Form::select('status', Task\Model\Ticket\Status::readableClosed(), null, ['class' => 'form-control']) }}
             </div>
 
             <div class="form-group @if($errors->has('comment')) has-error @endif">
