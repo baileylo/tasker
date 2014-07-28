@@ -27,7 +27,7 @@ class CreateUserProjectTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('user_project');
+		Schema::drop('user_projects');
 	}
 
 }

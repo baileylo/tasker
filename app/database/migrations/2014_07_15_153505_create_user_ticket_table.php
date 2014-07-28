@@ -27,7 +27,7 @@ class CreateUserTicketTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('user_ticket');
+		Schema::drop('user_tickets');
 	}
 
 }
