@@ -1,5 +1,9 @@
 @extends('layout.master')
 
+@section('title') {{{ $ticket->name }}} - {{{ $ticket->project->name }}} @stop
+
+@section('js')toggle @stop
+
 @section('content')
 <div class="row">
     <div class="col-lg-12">
@@ -22,13 +26,13 @@
     </div>
 </div>
 
-<div class="row">
+<div class="row" id="close-button-wrapper">
     <div class="col-lg-12">
-        <a href="#" class="btn btn-lg btn-danger">Close Ticket</a>
+        <a href="#" class="btn btn-lg btn-danger toggleable" data-hide-selector="#close-button-wrapper" data-toggle-selector="#close-ticket-form">Close Ticket</a>
     </div>
 </div>
 
-<div id="close-ticket-form">
+<div id="close-ticket-form" class="hidden">
     <div class="row">
         <div class="col-lg-12">
             <h4>Close Ticket</h4>
@@ -60,7 +64,7 @@
 
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Close</button>
-                <a href="#" class="btn btn-danger">Cancel</a>
+                <a href="#" class="btn btn-danger toggleable" data-toggle-selector="#close-button-wrapper" data-hide-selector="#close-ticket-form">Cancel</a>
             </div>
         </div>
     </div>
