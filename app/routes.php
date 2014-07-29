@@ -21,6 +21,7 @@ Route::get('/project/{objectId}/ticket/{ticketId}/view', ['uses' => 'Task\Contro
 
 
 Route::post('/project/{objectId}/ticket/{ticketId}/close', ['uses' => 'Task\Controller\Ticket\Manager@close', 'as' => 'ticket.close']);
+Route::post('/project/{objectId}/ticket/{ticketId}/add-comment', ['uses' => 'Task\Controller\Comment\Create@handle', 'as' => 'ticket.comment.add']);
 
 ## Admin Routes
 Route::get('/admin', ['uses' => 'Task\Controller\Admin\Project\Overview@index', 'as' => 'admin.project.index']);

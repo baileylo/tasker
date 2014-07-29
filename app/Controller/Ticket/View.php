@@ -11,6 +11,8 @@ class View extends Controller
             App::abort(404);
         }
 
+        $ticket->load('comments.author');
+
         return Template::make('ticket.show', compact('ticket'));
     }
 } 

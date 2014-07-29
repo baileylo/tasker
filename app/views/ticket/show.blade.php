@@ -66,8 +66,61 @@
                 <button type="submit" class="btn btn-primary">Close</button>
                 <a href="#" class="btn btn-danger toggleable" data-toggle-selector="#close-button-wrapper" data-hide-selector="#close-ticket-form">Cancel</a>
             </div>
+
+            {{ Form::close() }}
         </div>
     </div>
+</div>
+
+<div id="add-comment-form">
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Add Comment</h4>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            {{ Form::open(["role" => "form", 'action' => ['ticket.comment.add', $ticket->project_id, $ticket->id]]) }}
+
+            <div class="form-group @if($errors->has('comment')) has-error @endif">
+                @if($errors->has('comment'))
+                <p class="text-danger">{{ $errors->first('comment') }}</p>
+                @endif
+
+                {{ Form::textarea('comment', null, ['class' => 'form-control']) }}
+            </div>
+
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary">Add Comment</button>
+            </div>
+            {{ Form::close() }}
+        </div>
+    </div>
+</div>
+
+<div id="comments">
+    <div class="row">
+        <div class="col-lg-12">
+            <h4>Comments</h4>
+        </div>
+    </div>
+
+    @foreach($ticket->comments as $comment)
+        <article>
+            <div class="row">
+                <div class="col-lg-12">
+                    {{ $comment->author->present()->full_name }} on <date>{{ $comment->created_at->format('Y-m-d') }}</date>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <p>{{{ $comment->message }}}</p>
+                </div>
+            </div>
+        </article>
+    @endforeach
+
 </div>
 
 @stop
