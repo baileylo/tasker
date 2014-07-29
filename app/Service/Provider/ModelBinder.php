@@ -12,7 +12,7 @@ class ModelBinder extends ServiceProvider
     public function register()
     {
 
-        foreach(['Project', 'Ticket', 'User'] as $objectName) {
+        foreach(['Project', 'Ticket', 'User', 'Application'] as $objectName) {
             $this->app->bind(
                 'Task\Model\\' . $objectName . '\RepositoryInterface',
                 'Task\Model\\' . $objectName . '\EloquentRepository'
