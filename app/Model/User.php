@@ -86,4 +86,9 @@ class User extends Eloquent implements UserInterface
         return false;
     }
 
+    public function createOneTimeToken()
+    {
+        $this->one_time_token = \Str::random(32);
+    }
+
 }
