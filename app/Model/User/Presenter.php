@@ -14,6 +14,6 @@ class Presenter extends AbstractPresenter
 
     public function full_name()
     {
-        return $this->model->first_name . ' ' . $this->model->Last_name;
+        return $this->model->first_name . ' ' . $this->model->last_name;
     }
 } 
