@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddAssigneeToTicketsTable extends Migration {
+class CreateApplicationTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,9 +12,11 @@ class AddAssigneeToTicketsTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('tickets', function(Blueprint $table)
+		Schema::create('application', function(Blueprint $table)
 		{
-			$table->unsignedInteger('assignee_id')->nullable();
+			$table->increments('id');
+            $table->binary('is_setup');
+			$table->timestamps();
 		});
 	}
 
@@ -25,10 +27,7 @@ class AddAssigneeToTicketsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('tickets', function(Blueprint $table)
-		{
-			$table->dropColumn('assignee_id');
-		});
+		Schema::drop('application');
 	}
 
 }

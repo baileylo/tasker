@@ -18,8 +18,10 @@ class CreateTicketsTable extends Migration {
             $table->string('name');
             $table->text('description');
             $table->unsignedInteger('type');
+            $table->tinyInteger('status', false, true)->default(\Task\Model\Ticket\Status::WAITING);
             $table->unsignedInteger('reporter_id');
             $table->unsignedInteger('project_id');
+            $table->unsignedInteger('assignee_id')->nullable();
             $table->date('due_at')->nullable();
 			$table->timestamps();
 		});
