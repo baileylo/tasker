@@ -1,6 +1,5 @@
 <?php namespace Task\Command;
 
-use Illuminate\Console\Command;
 use Task\Model\Application;
 use Task\Model\Project;
 use Task\Model\User;
@@ -8,7 +7,8 @@ use Task\Service\Validator\User\Validator as UserValidator;
 use Task\Service\Validator\Project\Validator as ProjectValidator;
 use Task\Model\Application\RepositoryInterface as ApplicationRepo;
 
-class Install extends Command {
+class Install extends AbstractCommand
+{
 
 	/**
 	 * The console command name.
@@ -85,19 +85,19 @@ class Install extends Command {
     {
         $user = new User();
 
-        $user->first_name = $this->loopQuestionTillValidateReceiveAnswer(
+        $user->first_name = $this->askQuestionAndValidate(
             'What is your first name?',
             $this->userValidator,
             'first_name'
         );
 
-        $user->last_name = $this->loopQuestionTillValidateReceiveAnswer(
+        $user->last_name = $this->askQuestionAndValidate(
             'What is your last name?',
             $this->userValidator,
             'last_name'
         );
 
-        $user->email = $this->loopQuestionTillValidateReceiveAnswer(
+        $user->email = $this->askQuestionAndValidate(
             'What is your email address?',
             $this->userValidator,
             'email'
@@ -111,31 +111,18 @@ class Install extends Command {
     {
         $project = new Project();
 
-        $project->name = $this->loopQuestionTillValidateReceiveAnswer(
+        $project->name = $this->askQuestionAndValidate(
             'What is the name of your project? ',
             $this->projectValidator,
             'name'
         );
 
-        $project->description = $this->loopQuestionTillValidateReceiveAnswer(
+        $project->description = $this->askQuestionAndValidate(
             'Give a project description ',
             $this->projectValidator,
             'description'
         );
 
         return $project;
-    }
-
-    protected function loopQuestionTillValidateReceiveAnswer($question, $validator, $fieldName)
-    {
-        do {
-            $answer = $this->ask($question);
-            $errors = $validator->getErrors([$fieldName => $answer]);
-            if ($hasError = $errors->has($fieldName)) {
-                $this->error($errors->first($fieldName));
-            }
-        } while ($hasError);
-
-        return $answer;
     }
 }
