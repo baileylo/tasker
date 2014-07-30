@@ -11,9 +11,17 @@
 |
 */
 
-App::before(function($request)
+/**
+ * Check to make sure that the application has already been setup with the default user.
+ */
+App::before(function(\Illuminate\Http\Request $request)
 {
-	//
+	/** @var Task\Model\Application\RepositoryInterface $appRepo */
+    $appRepo = App::make('Task\Model\Application\RepositoryInterface');
+
+    if (!$appRepo->findSettings()->isAlreadySetup() && !$request->is('install', 'install/')) {
+        return Redirect::to('install');
+    }
 });
 
 

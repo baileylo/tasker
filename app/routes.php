@@ -1,7 +1,5 @@
 <?php
 
-Auth::loginUsingId(1);
-
 Route::get('/', ['uses' => 'Task\Controller\Home@index']);
 
 // Authentication Routes!
@@ -32,3 +30,5 @@ Route::post('/admin/project/create', ['uses' => 'Task\Controller\Admin\Project\C
 Route::get('/admin/project/{projectId}/delete', ['uses' => 'Task\Controller\Admin\Project\Delete@delete', 'as' => 'project.delete']);
 Route::get('/admin/project/{projectId}/edit', ['uses' => 'Task\Controller\Admin\Project\Edit@show', 'as' => 'project.edit']);
 Route::post('/admin/project/{projectId}/edit', ['uses' => 'Task\Controller\Admin\Project\Edit@handle', 'as' => 'project.edit']);
+
+Route::get('/install', ['uses' => 'Task\Controller\Install@message', 'as' => 'install']);
