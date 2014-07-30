@@ -3,8 +3,9 @@
 use Illuminate\Validation\Factory;
 use Task\Model\Ticket\Type;
 use Task\Service\Enum\LaravelValidatorBridge;
+use Task\Service\Validator\ValidatorInterface;
 
-class Validator
+class Validator implements ValidatorInterface
 {
     /** @var \Illuminate\Validation\Factory  */
     protected $factory;

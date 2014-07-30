@@ -1,8 +1,9 @@
 <?php namespace Task\Service\Validator\User;
 
 use Illuminate\Validation\Factory;
+use Task\Service\Validator\ValidatorInterface;
 
-class Validator
+class Validator implements ValidatorInterface
 {
     /** @var \Illuminate\Validation\Factory  */
     protected $factory;
