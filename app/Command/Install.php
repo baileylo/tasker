@@ -1,5 +1,6 @@
 <?php namespace Task\Command;
 
+use Illuminate\Database\QueryException;
 use Task\Model\Application;
 use Task\Model\Project;
 use Task\Model\User;
@@ -51,8 +52,20 @@ class Install extends AbstractCommand
 	 */
 	public function fire()
 	{
+        if (!$this->tablesExist()) {
+            $this->info('The database migrations have not been run.');
+            $response = $this->ask('They are required to continue with this script, do you want to run them now?[Y|N]');
+            if (!in_array($response, ['Y', 'y'])) {
+                return false;
+            }
+            $this->info('Running database migrations');
+            $this->call('migrate');
+            $this->info('');
+        }
+
         if ($this->applicationIsAlreadySetup()) {
             $this->error('Application has already been setup.');
+            $this->info('You can access Tasker here: ' . route('home'));
             return true;
         }
 
@@ -74,7 +87,22 @@ class Install extends AbstractCommand
         $application = new Application();
         $application->is_setup = true;
         $application->save();
+
+        $this->info('Setup complete!');
+        $this->info('You can access Tasker here: ' . route('home'));
 	}
+
+    /**
+     * Determine if the database tables exists.
+     *
+     * It does this by testing if the `select * from application limit 1` can be run.
+     *
+     * @return bool
+     */
+    protected function tablesExist()
+    {
+        return $this->applicationRepo->tableExists();
+    }
 
     protected function applicationIsAlreadySetup()
     {

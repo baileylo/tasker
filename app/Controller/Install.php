@@ -1,6 +1,7 @@
 <?php namespace Task\Controller;
 
-use Controller, App;
+use Controller, App, Task\Model\Application;
+use Illuminate\Database\QueryException;
 use Task\Model\Application\RepositoryInterface as AppRepo;
 
 class Install extends Controller
@@ -15,7 +16,7 @@ class Install extends Controller
 
     public function message()
     {
-        if ($this->appRepo->findSettings()->isAlreadySetup()) {
+        if ($this->appRepo->tableExists() && $this->appRepo->findSettings()->isAlreadySetup()) {
             App::abort(404);
         }
 

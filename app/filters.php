@@ -19,7 +19,7 @@ App::before(function(\Illuminate\Http\Request $request)
 	/** @var Task\Model\Application\RepositoryInterface $appRepo */
     $appRepo = App::make('Task\Model\Application\RepositoryInterface');
 
-    if (!$appRepo->findSettings()->isAlreadySetup() && !$request->is('install', 'install/')) {
+    if (!$request->is('install', 'install/') && (!$appRepo->tableExists() || !$appRepo->findSettings()->isAlreadySetup())) {
         return Redirect::to('install');
     }
 });

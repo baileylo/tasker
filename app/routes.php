@@ -1,6 +1,6 @@
 <?php
 
-Route::get('/', ['uses' => 'Task\Controller\Home@index']);
+Route::get('/', ['uses' => 'Task\Controller\Home@index', 'as' => 'home']);
 
 // Authentication Routes!
 
