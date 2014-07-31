@@ -15,23 +15,6 @@ $app = new Illuminate\Foundation\Application;
 
 /*
 |--------------------------------------------------------------------------
-| Detect The Application Environment
-|--------------------------------------------------------------------------
-|
-| Laravel takes a dead simple approach to your application environments
-| so you can just specify a machine name for the host that matches a
-| given environment, then we will automatically detect it for you.
-|
-*/
-
-$env = $app->detectEnvironment(array(
-
-	'local' => array('homestead', 'tenga', 'tenga.local', 'tenga.home'),
-
-));
-
-/*
-|--------------------------------------------------------------------------
 | Bind Paths
 |--------------------------------------------------------------------------
 |
@@ -42,6 +25,19 @@ $env = $app->detectEnvironment(array(
 */
 
 $app->bindInstallPaths(require __DIR__.'/paths.php');
+
+/*
+|--------------------------------------------------------------------------
+| Detect The Application Environment
+|--------------------------------------------------------------------------
+|
+| Laravel takes a dead simple approach to your application environments
+| so you can just specify a machine name for the host that matches a
+| given environment, then we will automatically detect it for you.
+|
+*/
+
+$env = $app['env'] = require $app['path'] . '/config/environment.php';
 
 /*
 |--------------------------------------------------------------------------
