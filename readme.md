@@ -1,25 +1,36 @@
-## Laravel PHP Framework
+# Tasker
 
-[![Build Status](https://travis-ci.org/laravel/framework.svg)](https://travis-ci.org/laravel/framework)
-[![Total Downloads](https://poser.pugx.org/laravel/framework/downloads.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Stable Version](https://poser.pugx.org/laravel/framework/v/stable.svg)](https://packagist.org/packages/laravel/framework)
-[![Latest Unstable Version](https://poser.pugx.org/laravel/framework/v/unstable.svg)](https://packagist.org/packages/laravel/framework)
-[![License](https://poser.pugx.org/laravel/framework/license.svg)](https://packagist.org/packages/laravel/framework)
+Sensibility brought to task management.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable, creative experience to be truly fulfilling. Laravel attempts to take the pain out of development by easing common tasks used in the majority of web projects, such as authentication, routing, sessions, and caching.
+## Installation
 
-Laravel aims to make the development process a pleasing one for the developer without sacrificing application functionality. Happy developers make the best code. To this end, we've attempted to combine the very best of what we have seen in other web frameworks, including frameworks implemented in other languages, such as Ruby on Rails, ASP.NET MVC, and Sinatra.
+This requires composer, you can find installation instructions for that
 
-Laravel is accessible, yet powerful, providing powerful tools needed for large, robust applications. A superb inversion of control container, expressive migration system, and tightly integrated unit testing support give you the tools you need to build any application with which you are tasked.
+```
+git clone git@github.com:baileylo/tasker.git
+cd tasker
+composer install
+```
 
-## Official Documentation
+Open up `app/config/production/database.php` and modify the database configurations.
 
-Documentation for the entire framework can be found on the [Laravel website](http://laravel.com/docs).
+Open up `app/config/production/app.php` and url to the url for your site url.
 
-### Contributing To Laravel
+From your terminal run `php artisan install`. This will walk you through creating your user account as well as setting up your first project.
 
-**All issues and pull requests should be filed on the [laravel/framework](http://github.com/laravel/framework) repository.**
+## Development mode
 
-### License
+Open `app/config/environment.php` and change the returned value from *production* to *local*.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+### Compiling CSS and JS
+
+From the tasker root directory run
+
+```
+npm install
+grunt
+``` 
+
+
+
+
