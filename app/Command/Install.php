@@ -69,6 +69,9 @@ class Install extends AbstractCommand
             return true;
         }
 
+        $this->info('Generating encryption key');
+        $this->call('key:generate');
+
 		$this->info('Welcome to Tasker!');
         $this->info('This will help you setup your account and first project');
         $user = $this->promptForUserInfo();
