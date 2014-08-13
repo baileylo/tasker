@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'HCkvDOhixJhpnZGk5qKB5hnPetM8QYWx',
+	'key' => 'SKwaU94g3nxsKPkxvB24JnhC7eY57viA',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -123,6 +123,7 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Task\Service\Provider\ModelBinder',
         'Task\Service\Provider\RouteBinder',
+        'Laracasts\Commander\CommanderServiceProvider'
 
 	),
 
