@@ -11,8 +11,9 @@ class Home extends Controller
 
         $ticketRepo = \App::make('Task\Model\Ticket\RepositoryInterface');
         $newTickets = $ticketRepo->findNewTicketsForProjectsFollowedByUser($user->id, 5);
+        $updatedTickets = $ticketRepo->findRecentlyUpdatedTicketsForProjectsFollowedByUser($user->id, 5);
 
-        return View::make('home.index', compact('newTickets'));
+        return View::make('home.index', compact('newTickets', 'updatedTickets'));
     }
 
     public function logIn()

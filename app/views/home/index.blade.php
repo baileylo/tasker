@@ -10,11 +10,9 @@
                 <div class="col-lg-12 sidebar-module">
                     <h1 class="sidebar-module-header">Recently Updated Tickets</h1>
                     <ul class="sidebar-module-list">
-                        <li><a href="#">Fix login link on landing page</a></li>
-                        <li><a href="#">Add email this to ticket button</a></li>
-                        <li><a href="#">Update the readme instructions</a></li>
-                        <li><a href="#">Optimize DNS prefetching</a></li>
-                        <li><a href="#">Build ACL</a></li>
+                        @foreach($updatedTickets as $ticket)
+                            <li><a href="{{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}}">{{{ $ticket->name }}}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
