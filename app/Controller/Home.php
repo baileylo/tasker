@@ -5,8 +5,13 @@ use Controller, View, Auth;
 class Home extends Controller
 {
 
-    public function index()
+    public function home()
     {
-        return View::make('hello');
+        return View::make('home.index');
+    }
+
+    public function logIn()
+    {
+        return View::make('home.login');
     }
 } 
