@@ -1,7 +1,8 @@
 <?php namespace Task\Model\Ticket;
 
-use string;
 use Task\Model\Ticket;
+use Task\Model\User;
+use Task\Service\Eloquent\JoinFactory;
 
 class EloquentRepository implements RepositoryInterface
 {
@@ -82,4 +83,39 @@ class EloquentRepository implements RepositoryInterface
             ->orderBy('updated_at', 'desc')
             ->get();
     }
-} 
+
+    /**
+     * Finds the newest tickets from all projects that a given user follows
+     *
+     * @param int   $userId
+     * @param array $relationships
+     * @return Ticket[]
+     */
+    public function findNewTicketsForProjectsFollowedByUser($userId, $limit, array $relationships = [])
+    {
+        $projectRelationship = $this->orm->project();
+        $project = [
+            'table' => $projectRelationship->getRelated()->getTable(),
+            'key' => $projectRelationship->getQualifiedOtherKeyName(),
+            'foreign' => $projectRelationship->getQualifiedForeignKey()
+        ];
+
+        /** @var \Illuminate\Database\Eloquent\Relations\BelongsToMany $projectWatchersRelationship */
+        $projectWatchersRelationship =  $this->orm->project()->getRelated()->watchers();
+
+        $userProjects = [
+            'table' => $projectWatchersRelationship->getTable(),
+            'key' => $projectWatchersRelationship->getForeignKey(),
+            'foreign' => $projectWatchersRelationship->getParent()->getQualifiedKeyName()
+        ];
+
+        return $this->orm
+            ->join($project['table'], $project['key'], '=', $project['foreign'])
+            ->join($userProjects['table'], $userProjects['key'], '=', $userProjects['foreign'])
+            ->select("{$this->orm->getTable()}.*")
+            ->where($projectWatchersRelationship->getOtherKey(), '=', $userId)
+            ->orderBy("{$this->orm->getTable()}.created_at", 'desc')
+            ->limit($limit)
+            ->get();
+    }
+}
