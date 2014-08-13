@@ -30,11 +30,9 @@ class Project extends Eloquent
 
     protected $table = 'projects';
 
-    public function users()
-    {
-        return $this->belongsToMany('Task\Model\User', 'user_projects');
-    }
-
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function tickets()
     {
         return $this->hasMany('Task\Model\Ticket');
