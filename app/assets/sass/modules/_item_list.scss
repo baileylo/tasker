@@ -1,0 +1,41 @@
+.item-list-indepth *{
+  font-weight: 300;
+}
+
+.item-list-indepth-checkbox, .item-list-indepth-description {
+  height: 10rem;
+}
+
+.item-list-indepth-checkbox {
+  width: 4rem;
+  float: left;
+  padding-top: 2rem;
+  text-align: center;
+}
+
+.item-list-indepth-header, .item-list-indepth-subheader {
+  margin: 0;
+}
+
+.item-list-indepth-header {
+  font-size: 3rem;
+  margin-bottom: .5rem;
+  border-bottom: 1px solid #ccc;
+}
+
+.item-list-indepth-subheader {
+  font-size: 1.2rem;
+  float: right;
+}
+
+.sidebar-module-header {
+  font-size: 2rem;
+  font-weight: 300;
+  margin-bottom: 0;
+  border-bottom: 1px solid #ccc;
+}
+
+.sidebar-module-list {
+  padding-left: 1rem;
+  list-style: none;
+}
