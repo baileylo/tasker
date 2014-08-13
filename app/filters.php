@@ -22,6 +22,10 @@ App::before(function(\Illuminate\Http\Request $request)
     if (!$request->is('install', 'install/') && (!$appRepo->tableExists() || !$appRepo->findSettings()->isAlreadySetup())) {
         return Redirect::to('install');
     }
+
+    if (!$request->is('login', 'auth/login', 'install') && !Auth::check()) {
+        return Redirect::guest('/login');
+    }
 });
 
 

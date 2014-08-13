@@ -7,8 +7,14 @@ use Task\Model\Ticket;
 use Task\Model\User\RepositoryInterface as UserRepo;
 use Task\Service\Validator\Ticket\Validator;
 
+use Laracasts\Commander\CommanderTrait;
+use Task\Service\Validator\ValidationFailedException;
+use Task\Ticket\CreateTicketCommand;
+
 class Create extends Controller
 {
+    use CommanderTrait;
+
     /** @var \Task\Service\Validator\Ticket\Validator  */
     protected $validator;
 
@@ -29,35 +35,18 @@ class Create extends Controller
     public function handle(Project $project)
     {
         $data = Input::only(['description', 'name', 'type', 'due_date', 'assignee']);
+        $data['project'] = $project;
+        $data['creator'] = Auth::user();
 
-        if ($errors = $this->validator->getErrors($data)) {
-            return Redirect::back()->withInput()->withErrors($errors);
+        try {
+           $this->execute(CreateTicketCommand::class, $data, ['Task\\Ticket\\AssigneeConverter']);
+        }
+        catch(ValidationFailedException $exception)
+        {
+            return Redirect::back()->withInput()->withErrors($exception->getErrors());
         }
 
-        if ($data['assignee'] && !$assignee = $this->userRepo->findByEmail($data['assignee'])) {
-            $errors = new MessageBag(['assignee' => ['Unable to find assignee by email']]);
-            return Redirect::back()->withInput()->withErrors($errors);
-        }
-
-        $ticket = new Ticket();
-        $ticket->reporter()->associate(Auth::user());
-        $ticket->project()->associate($project);
-        $ticket->description = $data['description'];
-        $ticket->name = $data['name'];
-        $ticket->type = intval($data['type']);
-        $ticket->status = Ticket\Status::WAITING;
-        $ticket->due_at = $data['due_date']?: null;
-
-        if ($data['assignee']) {
-            $ticket->assignee()->associate($assignee);
-        }
-
-        $ticket->save();
-
-        if (Input::get('submission_type') === 'create_another') {
-            return Redirect::route('ticket.create', $project->id);
-        }
-
-        return Redirect::route('project.view', [$project->id]);
+        $routeName = Input::get('submission_type') === 'create_another' ? 'ticket.create' : 'project.view';
+        return Redirect::route($routeName, $project->id);
     }
 } 

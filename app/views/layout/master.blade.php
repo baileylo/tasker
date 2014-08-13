@@ -3,19 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
     <title>@yield('title', 'Task')</title>
     <!-- Latest compiled and minified CSS -->
-    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/bootstrap.css">
 
     <!-- Optional theme -->
     <link rel="stylesheet" href="/css/bootstrap.theme.min.css">
+
+    <link rel="stylesheet" href="/css/main.css">
 </head>
 <body>
 
-    <input type="hidden" id="js-included-modules" value="@yield('js')" />
+    <input type="hidden" id="js-included-modules" value="authentication @yield('js')" />
+    <script type="text/javascript">var currentUser = {{ $currentUser }};</script>
 
-    <div class="container-fluid">
+    @include('partials.top-nav')
+
+    <div class="container">
         @yield('content')
     </div>
 

@@ -1,14 +1,36 @@
 <?php
 
-Route::get('/', ['uses' => 'Task\Controller\Home@index', 'as' => 'home']);
+View::composer('layout.master', function($view)
+{
+    if (Session::has('email')) {
+        $view->with('currentUser', '"' . Session::get('email') . '"');
+        return true;
+    }
+
+    if (Auth::check()) {
+        $view->with('currentUser', '"' . Auth::user()->email . '"');
+
+        return true;
+    }
+
+    $view->with('currentUser', 'null');
+});
+
+Event::listen('Task.*', 'Task\Ticket\Listeners\WatcherListener');
+
+Route::get('/', ['uses' => 'Task\Controller\Home@home', 'as' => 'home']);
+Route::get('/login', ['uses' => 'Task\Controller\Home@login', 'as' => 'login']);
 
 // Authentication Routes!
 
 Route::post('/auth/login', ['uses' => 'Task\Controller\Auth@login']);
 Route::post('/auth/logout', ['uses' => 'Task\Controller\Auth@logout']);
-
-
 Route::get('/auth/login', ['uses' => 'Task\Controller\Auth@login']);
+
+Route::get('/registration', ['uses' => 'Task\Controller\User\Registration@show', 'as' => 'registration']);
+Route::post('/registration', ['uses' => 'Task\Controller\User\Registration@handle', 'as' => 'registration']);
+
+Route::get('/my-projects', ['uses' => 'Task\Controller\User\Project@show', 'as' => 'user.projects']);
 
 Route::get('/project/{projectId}', ['uses' => 'Task\Controller\Project\View@show', 'as' => 'project.view']);
 
