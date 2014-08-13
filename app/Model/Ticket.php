@@ -2,8 +2,12 @@
 
 use Carbon\Carbon;
 use Eloquent;
+use Laracasts\Commander\Events\EventGenerator;
 use Task\Model\Ticket\Status;
 use Task\Service\Presenter\Presentable;
+use Task\Ticket\CreateTicketCommand;
+use Task\Ticket\Events\TicketWasCreated;
+use Task\Ticket\TicketFactory;
 
 /**
  * Task\Model\Ticket
@@ -12,7 +16,7 @@ use Task\Service\Presenter\Presentable;
  * @property-read \Task\Model\Project $project
  * @property-read \Task\Model\User $assignee
  * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\Comment[] $comments
- * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\User[] $subscribers
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\User[] $watchers
  * @property integer $id
  * @property string $name
  * @property string $description
@@ -39,6 +43,7 @@ use Task\Service\Presenter\Presentable;
 class Ticket extends Eloquent
 {
     use Presentable;
+    use EventGenerator;
 
     /**
      * Name of the database table
@@ -87,9 +92,9 @@ class Ticket extends Eloquent
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
-    public function subscribers()
+    public function watchers()
     {
-        return $this->belongsToMany('Task\Model\User');
+        return $this->belongsToMany('Task\Model\User', 'user_tickets');
     }
 
     /**
@@ -121,6 +126,18 @@ class Ticket extends Eloquent
     public function isClosed()
     {
         return !$this->isOpen();
+    }
+
+    public static function createTicket(CreateTicketCommand $command)
+    {
+        $factory = new TicketFactory();
+
+        $ticket = $factory->makeFromCommand($command);
+        $ticket->save();
+
+        $ticket->raise(new TicketWasCreated($ticket));
+
+        return $ticket;
     }
 
 } 

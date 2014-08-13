@@ -8,6 +8,7 @@ use Task\Service\Presenter\Presentable;
  *
  * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\User[] $users
  * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\Ticket[] $tickets
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Task\Model\User[] $watchers
  * @property integer $id
  * @property string $name
  * @property string $description
@@ -37,5 +38,13 @@ class Project extends Eloquent
     public function tickets()
     {
         return $this->hasMany('Task\Model\Ticket');
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
+     */
+    public function watchers()
+    {
+        return $this->belongsToMany('Task\Model\User', 'user_projects');
     }
 } 

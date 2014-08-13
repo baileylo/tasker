@@ -73,7 +73,7 @@ class User extends Eloquent implements UserInterface
      */
     public function setRememberToken($value)
     {
-        return false;
+        return;
     }
 
     /**
@@ -86,9 +86,14 @@ class User extends Eloquent implements UserInterface
         return false;
     }
 
+
+    public function projects()
+    {
+        return $this->belongsToMany('Task\Model\Project', 'user_projects');
+    }
+
     public function createOneTimeToken()
     {
         $this->one_time_token = \Str::random(32);
     }
-
 }
