@@ -7,7 +7,8 @@
 		"laravel/framework": "4.2.*",
         "barryvdh/laravel-ide-helper": "1.*",
         "guzzlehttp/guzzle": "4.1.2",
-        "doctrine/dbal": "2.4.2"
+        "doctrine/dbal": "2.4.2",
+        "laracasts/commander": "~1.0"
 	},
 	"autoload": {
 		"classmap": [
@@ -16,7 +17,7 @@
 			"app/tests/TestCase.php"
 		],
         "psr-4": {
-            "Task\\": "app"
+            "Task\\": ["app", "app/src"]
         }
 	},
 	"scripts": {
