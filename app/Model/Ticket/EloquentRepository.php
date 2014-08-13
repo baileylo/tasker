@@ -85,13 +85,12 @@ class EloquentRepository implements RepositoryInterface
     }
 
     /**
-     * Finds the newest tickets from all projects that a given user follows
+     * Prepares a query which will return all tickets from projects that a given user follows.
      *
-     * @param int   $userId
-     * @param array $relationships
-     * @return Ticket[]
+     * @param int $userId
+     * @return \Illuminate\Database\Query\Builder
      */
-    public function findNewTicketsForProjectsFollowedByUser($userId, $limit, array $relationships = [])
+    protected function findTicketsWatchedByProject($userId)
     {
         $projectRelationship = $this->orm->project();
         $project = [
@@ -113,8 +112,35 @@ class EloquentRepository implements RepositoryInterface
             ->join($project['table'], $project['key'], '=', $project['foreign'])
             ->join($userProjects['table'], $userProjects['key'], '=', $userProjects['foreign'])
             ->select("{$this->orm->getTable()}.*")
-            ->where($projectWatchersRelationship->getOtherKey(), '=', $userId)
+            ->where($projectWatchersRelationship->getOtherKey(), '=', $userId);
+    }
+
+    /**
+     * Finds the newest tickets from all projects that a given user follows
+     *
+     * @param int   $userId
+     * @param array $relationships
+     * @return Ticket[]
+     */
+    public function findNewTicketsForProjectsFollowedByUser($userId, $limit)
+    {
+        return $this->findTicketsWatchedByProject($userId)
             ->orderBy("{$this->orm->getTable()}.created_at", 'desc')
+            ->limit($limit)
+            ->get();
+    }
+
+    /**
+     * Finds the most recently update tickets from all projects that a given user follows
+     *
+     * @param int $userId
+     * @param array $relationships
+     * @return Ticket[]
+     */
+    public function findRecentlyUpdatedTicketsForProjectsFollowedByUser($userId, $limit, array $relationships = [])
+    {
+        return $this->findTicketsWatchedByProject($userId)
+            ->orderBy("{$this->orm->getTable()}.updated_at", 'desc')
             ->limit($limit)
             ->get();
     }

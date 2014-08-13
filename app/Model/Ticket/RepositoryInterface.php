@@ -49,5 +49,14 @@ interface RepositoryInterface
      * @param array $relationships
      * @return Ticket[]
      */
-    public function findNewTicketsForProjectsFollowedByUser($userId, $limit, array $relationships = []);
+    public function findNewTicketsForProjectsFollowedByUser($userId, $limit);
+
+    /**
+     * Finds the newest tickets from all projects that a given user follows
+     *
+     * @param int   $userId
+     * @param array $relationships
+     * @return Ticket[]
+     */
+    public function findRecentlyUpdatedTicketsForProjectsFollowedByUser($userId, $limit);
 } 
