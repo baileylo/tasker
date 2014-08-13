@@ -7,7 +7,12 @@ class Home extends Controller
 
     public function home()
     {
-        return View::make('home.index');
+        $user = Auth::user();
+
+        $ticketRepo = \App::make('Task\Model\Ticket\RepositoryInterface');
+        $newTickets = $ticketRepo->findNewTicketsForProjectsFollowedByUser($user->id, 5);
+
+        return View::make('home.index', compact('newTickets'));
     }
 
     public function logIn()

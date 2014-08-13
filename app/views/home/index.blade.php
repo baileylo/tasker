@@ -23,11 +23,9 @@
                 <div class="col-lg-12 sidebar-module">
                     <h1 class="sidebar-module-header">New Tickets</h1>
                     <ul class="sidebar-module-list">
-                        <li><a href="#">Fix typo in user management</a></li>
-                        <li><a href="#">Allow Editing of existing tickets</a></li>
-                        <li><a href="#">Add ticket versioning</a></li>
-                        <li><a href="#">Ajax comment submissions</a></li>
-                        <li><a href="#">Long pull for new comments</a></li>
+                        @foreach($newTickets as $ticket)
+                            <li><a href="{{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}}">{{{ $ticket->name }}}</a></li>
+                        @endforeach
                     </ul>
                 </div>
             </div>
