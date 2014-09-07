@@ -1,14 +1,11 @@
 <?php namespace Portico\Task\Ticket;
 
-use Carbon\Carbon;
 use Eloquent;
 use Laracasts\Commander\Events\EventGenerator;
-use Portico\Task\User\User;
-use Task\Model\Ticket\Status;
-use Task\Service\Presenter\Presentable;
-use Task\Ticket\CreateTicketCommand;
-use Task\Ticket\Events\TicketWasCreated;
-use Task\Ticket\TicketFactory;
+use Portico\Task\Ticket\Enum\Status;
+use Portico\Core\Presenter\Presentable;
+use Portico\Task\Ticket\Command\CreateTicketCommand;
+use Portico\Task\Ticket\Events\TicketWasCreated;
 
 /**
  * Task\Model\Ticket
@@ -71,7 +68,7 @@ class Ticket extends Eloquent
      */
     public function assignee()
     {
-        return $this->belongsTo('Portico\Task\Userl\User', 'assignee_id');
+        return $this->belongsTo('Portico\Task\User\User', 'assignee_id');
     }
 
     /**

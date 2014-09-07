@@ -1,7 +1,7 @@
 <?php namespace Portico\Task\Project;
 
 use Illuminate\Support\Str;
-use Task\Service\Presenter\AbstractPresenter;
+use Portico\Core\Presenter\AbstractPresenter;
 
 class Presenter extends AbstractPresenter
 {

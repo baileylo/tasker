@@ -1,11 +1,11 @@
-<?php namespace Portico\Task\Ticket\Command;
+<?php namespace Portico\Task\Ticket\Validator;
 
 use Illuminate\Validation\Factory;
+use Portico\Core\Validator\Validator;
 use Portico\Task\Ticket\Enum\Type;
 use Portico\Core\Enum\LaravelValidatorBridge;
-use Portico\Core\Validator\ValidationFailedException;
 
-class CreateTicketValidator
+class TicketValidator implements Validator
 {
     /** @var \Illuminate\Validation\Factory  */
     protected $factory;
@@ -33,14 +33,10 @@ class CreateTicketValidator
         $this->rules['type'] = ['required', $bridge->getRule()];
     }
 
-    public function validate(CreateTicketCommand $command)
+    public function getErrors(array $input)
     {
-        $validator = $this->factory->make($command->toArray(), $this->rules);
+        $validator = $this->factory->make($input, $this->rules);
 
-        if ($validator->passes()) {
-            return true;
-        }
-
-        throw new ValidationFailedException($validator->messages());
+        return $validator->fails() ? $validator->messages() : false;
     }
 } 

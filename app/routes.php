@@ -17,8 +17,8 @@ View::composer('layout.master', function($view)
 });
 
 Event::listen('Task.*', 'Portico\Task\Ticket\Listeners\WatcherListener');
-Event::listen('Task.*', 'Task\Project\Listeners\WatcherListener');
-Event::listen('Task.*', 'Task\Project\Listeners\StreamBuilderListener');
+Event::listen('Task.*', 'Portico\Task\Project\Listeners\WatcherListener');
+Event::listen('Task.*', 'Portico\Task\Project\Listeners\StreamBuilderListener');
 
 
 Route::get('force-login', function() {
@@ -28,39 +28,39 @@ Route::get('force-login', function() {
     return Redirect::intended();
 });
 
-Route::get('/', ['uses' => 'Task\Controller\Home@home', 'as' => 'home']);
-Route::get('/login', ['uses' => 'Task\Controller\Home@login', 'as' => 'login']);
+Route::get('/', ['uses' => 'Portico\Task\Http\Controller\Home@home', 'as' => 'home']);
+Route::get('/login', ['uses' => 'Portico\Task\Http\Controller\Home@login', 'as' => 'login']);
 
 // Authentication Routes!
 
-Route::post('/auth/login', ['uses' => 'Task\Controller\Auth@login']);
-Route::post('/auth/logout', ['uses' => 'Task\Controller\Auth@logout']);
-Route::get('/auth/login', ['uses' => 'Task\Controller\Auth@login']);
+Route::post('/auth/login', ['uses' => 'Portico\Task\Http\Controller\Auth@login']);
+Route::post('/auth/logout', ['uses' => 'Portico\Task\Http\Controller\Auth@logout']);
+Route::get('/auth/login', ['uses' => 'Portico\Task\Http\Controller\Auth@login']);
 
-Route::get('/registration', ['uses' => 'Task\Controller\User\Registration@show', 'as' => 'registration']);
-Route::post('/registration', ['uses' => 'Task\Controller\User\Registration@handle', 'as' => 'registration']);
+Route::get('/registration', ['uses' => 'Portico\Task\Http\Controller\User\Registration@show', 'as' => 'registration']);
+Route::post('/registration', ['uses' => 'Portico\Task\Http\Controller\User\Registration@handle', 'as' => 'registration']);
 
-Route::get('/my-projects', ['uses' => 'Task\Controller\User\Project@show', 'as' => 'user.projects']);
+Route::get('/my-projects', ['uses' => 'Portico\Task\Http\Controller\User\Project@show', 'as' => 'user.projects']);
 
-Route::get('/project/{projectId}', ['uses' => 'Task\Controller\Project\View@show', 'as' => 'project.view']);
+Route::get('/project/{projectId}', ['uses' => 'Portico\Task\Http\Controller\Project\View@show', 'as' => 'project.view']);
 
-Route::get('/project/{projectId}/ticket/create', ['uses' => 'Task\Controller\Ticket\Create@view', 'as' => 'ticket.create']);
-Route::post('/project/{projectId}/ticket/create', ['uses' => 'Task\Controller\Ticket\Create@handle', 'as' => 'ticket.create']);
+Route::get('/project/{projectId}/ticket/create', ['uses' => 'Portico\Task\Http\Controller\Ticket\Create@view', 'as' => 'ticket.create']);
+Route::post('/project/{projectId}/ticket/create', ['uses' => 'Portico\Task\Http\Controller\Ticket\Create@handle', 'as' => 'ticket.create']);
 
-Route::get('/project/{objectId}/ticket/{ticketId}/view', ['uses' => 'Task\Controller\Ticket\View@show', 'as' => 'ticket.view']);
+Route::get('/project/{objectId}/ticket/{ticketId}/view', ['uses' => 'Portico\Task\Http\Controller\Ticket\View@show', 'as' => 'ticket.view']);
 
 
-Route::post('/project/{objectId}/ticket/{ticketId}/close', ['uses' => 'Task\Controller\Ticket\Manager@close', 'as' => 'ticket.close']);
-Route::post('/project/{objectId}/ticket/{ticketId}/add-comment', ['uses' => 'Task\Controller\Comment\Create@handle', 'as' => 'ticket.comment.add']);
+Route::post('/project/{objectId}/ticket/{ticketId}/close', ['uses' => 'Portico\Task\Http\Controller\Ticket\Manager@close', 'as' => 'ticket.close']);
+Route::post('/project/{objectId}/ticket/{ticketId}/add-comment', ['uses' => 'Portico\Task\Http\Controller\Comment\Create@handle', 'as' => 'ticket.comment.add']);
 
 ## Admin Routes
 Route::get('/admin', ['uses' => 'Task\Controller\Admin\Project\Overview@index', 'as' => 'admin.project.index']);
 
-Route::get('/admin/project/create', ['uses' => 'Task\Controller\Admin\Project\Create@view', 'as' => 'project.create']);
-Route::post('/admin/project/create', ['uses' => 'Task\Controller\Admin\Project\Create@handle']);
+Route::get('/admin/project/create', ['uses' => 'Portico\Task\Http\Controller\Admin\Project\Create@view', 'as' => 'project.create']);
+Route::post('/admin/project/create', ['uses' => 'Portico\Task\Http\Controller\Admin\Project\Create@handle']);
 
-Route::get('/admin/project/{projectId}/delete', ['uses' => 'Task\Controller\Admin\Project\Delete@delete', 'as' => 'project.delete']);
-Route::get('/admin/project/{projectId}/edit', ['uses' => 'Task\Controller\Admin\Project\Edit@show', 'as' => 'project.edit']);
-Route::post('/admin/project/{projectId}/edit', ['uses' => 'Task\Controller\Admin\Project\Edit@handle', 'as' => 'project.edit']);
+Route::get('/admin/project/{projectId}/delete', ['uses' => 'Portico\Task\Http\Controller\Admin\Project\Delete@delete', 'as' => 'project.delete']);
+Route::get('/admin/project/{projectId}/edit', ['uses' => 'Portico\Task\Http\Controller\Admin\Project\Edit@show', 'as' => 'project.edit']);
+Route::post('/admin/project/{projectId}/edit', ['uses' => 'Portico\Task\Http\Controller\Admin\Project\Edit@handle', 'as' => 'project.edit']);
 
-Route::get('/install', ['uses' => 'Task\Controller\Install@message', 'as' => 'install']);
+Route::get('/install', ['uses' => 'Portico\Task\Http\Controller\Install@message', 'as' => 'install']);

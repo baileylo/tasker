@@ -4,8 +4,6 @@ use Eloquent;
 
 /**
  * Application is a key value store of random state data for the entire application, EG is it installed.
- *
- * @package Task\Model
  */
 class Application extends Eloquent
 {

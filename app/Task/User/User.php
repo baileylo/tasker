@@ -2,7 +2,7 @@
 
 use Eloquent;
 use Illuminate\Auth\UserInterface;
-use Task\Service\Presenter\Presentable;
+use Portico\Core\Presenter\Presentable;
 
 /**
  * Task\Model\User

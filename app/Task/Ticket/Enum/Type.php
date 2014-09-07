@@ -1,6 +1,6 @@
 <?php namespace Portico\Task\Ticket\Enum;
 
-use Task\Service\Enum\Base;
+use Portico\Core\Enum\Base;
 
 class Type extends Base
 {

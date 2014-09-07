@@ -121,8 +121,8 @@ return array(
 		'Illuminate\Validation\ValidationServiceProvider',
 		'Illuminate\View\ViewServiceProvider',
 		'Illuminate\Workbench\WorkbenchServiceProvider',
-        'Task\Service\Provider\ModelBinder',
-        'Task\Service\Provider\RouteBinder',
+        'Portico\Task\ServiceProvider\ModelBinder',
+        'Portico\Task\ServiceProvider\RouteBinder',
         'Laracasts\Commander\CommanderServiceProvider'
 
 	),

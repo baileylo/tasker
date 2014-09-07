@@ -31,6 +31,6 @@ class Comment extends Eloquent
 
     public function ticket()
     {
-        return $this->belongsTo('PorticoTask\Ticket\Ticket');
+        return $this->belongsTo('Portico\Task\Ticket\Ticket');
     }
 } 

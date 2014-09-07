@@ -1,7 +1,7 @@
 <?php namespace Portico\Task\Ticket;
 
 use Portico\Task\Ticket\Enum\Status;
-use Task\Service\Presenter\AbstractPresenter;
+use Portico\Core\Presenter\AbstractPresenter;
 
 class Presenter extends AbstractPresenter
 {

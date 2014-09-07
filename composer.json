@@ -18,7 +18,8 @@
 		],
         "psr-4": {
             "Task\\": ["app", "app/src"],
-            "Portico\\Task\\": "app/Task"
+            "Portico\\Task\\": "app/Task",
+            "Portico\\Core\\": "app/Core"
         }
 	},
 	"scripts": {

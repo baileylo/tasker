@@ -1,7 +1,7 @@
 <?php namespace Portico\Task\User;
 
-use Task\Service\Gravatar;
-use Task\Service\Presenter\AbstractPresenter;
+use Portico\Core\Gravatar\GravatarGenerator;
+use Portico\Core\Presenter\AbstractPresenter;
 
 class Presenter extends AbstractPresenter
 {
@@ -19,6 +19,6 @@ class Presenter extends AbstractPresenter
 
     public function gravatar_url($width = 50)
     {
-        return Gravatar::get($this->model->email, $width);
+        return GravatarGenerator::get($this->model->email, $width);
     }
 } 

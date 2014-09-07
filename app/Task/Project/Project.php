@@ -1,7 +1,7 @@
 <?php namespace Portico\Task\Project;
 
 use Eloquent;
-use Task\Service\Presenter\Presentable;
+use Portico\Core\Presenter\Presentable;
 
 /**
  * Portico\Task\Project\Project
