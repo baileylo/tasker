@@ -4,6 +4,13 @@
     <div class="row">
         <div class="col-lg-8">
             <h1>Stream</h1>
+
+            @foreach($streamItems as $streamItem)
+                <div class="row">
+                    @include('partials.stream-item', ['entry' => $streamItem])
+                </div>
+            @endforeach
+
         </div>
         <div class="col-lg-4">
             <div class="row">

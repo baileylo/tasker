@@ -16,7 +16,17 @@ View::composer('layout.master', function($view)
     $view->with('currentUser', 'null');
 });
 
-Event::listen('Task.*', 'Task\Ticket\Listeners\WatcherListener');
+Event::listen('Task.*', 'Portico\Task\Ticket\Listeners\WatcherListener');
+Event::listen('Task.*', 'Task\Project\Listeners\WatcherListener');
+Event::listen('Task.*', 'Task\Project\Listeners\StreamBuilderListener');
+
+
+Route::get('force-login', function() {
+    $user = \Portico\Task\User\User::find(1);
+    Auth::login($user);
+
+    return Redirect::intended();
+});
 
 Route::get('/', ['uses' => 'Task\Controller\Home@home', 'as' => 'home']);
 Route::get('/login', ['uses' => 'Task\Controller\Home@login', 'as' => 'login']);

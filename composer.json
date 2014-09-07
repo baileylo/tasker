@@ -17,7 +17,8 @@
 			"app/tests/TestCase.php"
 		],
         "psr-4": {
-            "Task\\": ["app", "app/src"]
+            "Task\\": ["app", "app/src"],
+            "Portico\\Task\\": "app/Task"
         }
 	},
 	"scripts": {

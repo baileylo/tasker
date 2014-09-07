@@ -28,7 +28,7 @@ return array(
 	|
 	*/
 
-	'model' => 'Task\Model\User',
+	'model' => 'Portico\Task\User\User',
 
 	/*
 	|--------------------------------------------------------------------------

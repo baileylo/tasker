@@ -11,16 +11,15 @@ class RouteBinder extends ServiceProvider
      */
     public function register()
     {
-
-        /** @var \Task\Model\Project\RepositoryInterface $projectRepo */
-        $projectRepo = $this->app->make('Task\Model\Project\RepositoryInterface');
+        /** @var \Portico\Task\Project\ProjectRepository $projectRepo */
+        $projectRepo = $this->app->make('Portico\Task\Project\ProjectRepository');
 
         $this->app->make('Illuminate\Routing\Router')->bind('projectId', function($projectId) use ($projectRepo) {
             return $projectRepo->findById($projectId);
         });
 
-        /** @var \Task\Model\Ticket\RepositoryInterface $projectRepo */
-        $ticketRepo = $this->app->make('Task\Model\Ticket\RepositoryInterface');
+        /** @var \Portico\Task\Ticket\TicketRepository $projectRepo */
+        $ticketRepo = $this->app->make('Portico\Task\Ticket\TicketRepository');
 
         $this->app->make('Illuminate\Routing\Router')->bind('ticketId', function($ticketId) use ($ticketRepo) {
             return $ticketRepo->findById($ticketId);

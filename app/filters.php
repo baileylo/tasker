@@ -16,14 +16,14 @@
  */
 App::before(function(\Illuminate\Http\Request $request)
 {
-	/** @var Task\Model\Application\RepositoryInterface $appRepo */
-    $appRepo = App::make('Task\Model\Application\RepositoryInterface');
+	/** @var Portico\Task\Application\ApplicationRepository $appRepo */
+    $appRepo = App::make('Portico\Task\Application\ApplicationRepository');
 
     if (!$request->is('install', 'install/') && (!$appRepo->tableExists() || !$appRepo->findSettings()->isAlreadySetup())) {
         return Redirect::to('install');
     }
 
-    if (!$request->is('login', 'auth/login', 'install') && !Auth::check()) {
+    if (!$request->is('login', 'auth/login', 'install', 'force-login') && !Auth::check()) {
         return Redirect::guest('/login');
     }
 });

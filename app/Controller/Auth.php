@@ -1,20 +1,23 @@
 <?php namespace Task\Controller;
 
-use Controller, GuzzleHttp, Redirect, Session;
+use Controller, GuzzleHttp, Response, Session;
 use Illuminate\Http\Request;
 use Illuminate\Config\Repository as Config;
-use Task\Model\User;
-use Task\Model\User\RepositoryInterface as UserRepo;
+use Portico\Task\User\User;
+use Portico\Task\User\UserRepository;
 
 class Auth extends Controller
 {
+    /** @var Request  */
     protected $request;
+
+    /** @var Config  */
     protected $config;
 
-    /** @var \Task\Model\User\RepositoryInterface  */
+    /** @var UserRepository  */
     protected $userRepository;
 
-    public function __construct(Request $request, Config $config, UserRepo $userRepo)
+    public function __construct(Request $request, Config $config, UserRepository $userRepo)
     {
         $this->request = $request;
         $this->config = $config;
@@ -42,12 +45,10 @@ class Auth extends Controller
 
             \Auth::login($user);
 
-            $path = Session::pull('url.intended', route('home'));
-
-            return [
+            return Response::make([
                 'status' => 'logged_in',
-                'redirect_url' => url($path)
-            ];
+                'redirect_url' => url(Session::pull('url.intended', route('home')))
+            ]);
         }
 
         return $response->json();
