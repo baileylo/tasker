@@ -123,8 +123,8 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
         'Portico\Task\ServiceProvider\ModelBinder',
         'Portico\Task\ServiceProvider\RouteBinder',
-        'Laracasts\Commander\CommanderServiceProvider'
-
+        'Laracasts\Commander\CommanderServiceProvider',
+        'Portico\Task\ServiceProvider\ArtisanServiceProvider',
 	),
 
 	/*

@@ -13,8 +13,6 @@
 
 ClassLoader::addDirectories(array(
 
-	app_path().'/Command',
-	app_path().'/Controller',
 	app_path().'/database/seeds',
 
 ));
