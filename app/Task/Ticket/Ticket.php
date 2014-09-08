@@ -1,6 +1,7 @@
 <?php namespace Portico\Task\Ticket;
 
 use Eloquent;
+use Illuminate\Database\Query\Builder;
 use Laracasts\Commander\Events\EventGenerator;
 use Portico\Task\Ticket\Enum\Status;
 use Portico\Core\Presenter\Presentable;
@@ -26,17 +27,17 @@ use Portico\Task\Ticket\Events\TicketWasCreated;
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
  * @property integer        $status
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereName($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereDescription($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereType($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereReporterId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereProjectId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereAssigneeId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereDueAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereUpdatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\Ticket\Ticket whereStatus($value)
+ * @method static Builder|Ticket whereId($value)
+ * @method static Builder|Ticket whereName($value)
+ * @method static Builder|Ticket whereDescription($value)
+ * @method static Builder|Ticket whereType($value)
+ * @method static Builder|Ticket whereReporterId($value)
+ * @method static Builder|Ticket whereProjectId($value)
+ * @method static Builder|Ticket whereAssigneeId($value)
+ * @method static Builder|Ticket whereDueAt($value)
+ * @method static Builder|Ticket whereCreatedAt($value)
+ * @method static Builder|Ticket whereUpdatedAt($value)
+ * @method static Builder|Ticket whereStatus($value)
  */
 class Ticket extends Eloquent
 {

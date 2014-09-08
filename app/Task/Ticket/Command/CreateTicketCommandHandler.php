@@ -10,7 +10,7 @@ class CreateTicketCommandHandler implements CommandHandler
 
     /**
      * @param CreateTicketCommand $command
-     * @return mixed|void
+     * @return Ticket
      */
     public function handle($command)
     {

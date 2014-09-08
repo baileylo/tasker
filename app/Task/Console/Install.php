@@ -1,59 +1,94 @@
 <?php namespace Portico\Task\Console;
 
+use DB;
+use Laracasts\Commander\CommandBus;
+use Portico\Core\Commander\CommanderConsoleTrait;
+use Portico\Core\Validator\ValidationFailedException;
 use Portico\Task\Application\Application;
-use Portico\Task\Project\Project;
-use Portico\Task\User\User;
-use Portico\Task\Project\ProjectValidator;
 use Portico\Task\Application\ApplicationRepository;
+use Portico\Task\Project\Command\CreateProjectCommand;
+use Portico\Task\Project\Command\CreateProjectValidator;
+use Portico\Task\Project\Project;
+use Portico\Task\User\Command\WatchProjectCommand;
+use Portico\Task\User\User;
 use Portico\Task\User\UserValidator;
+use Portico\Task\User\Command\CreateUserCommand;
 
+
+/**
+ * Class Install
+ * @method Project|User executeJob($commandName, array $input = array(), array $decorators = array())
+ */
 class Install extends AbstractCommand
 {
-	/**
-	 * The console command name.
-	 *
-	 * @var string
-	 */
-	protected $name = 'install';
+    use CommanderConsoleTrait;
 
-	/**
-	 * The console command description.
-	 *
-	 * @var string
-	 */
-	protected $description = 'Setup your first project and user.';
+    /**
+     * The console command name.
+     *
+     * @var string
+     */
+    protected $name = 'install';
 
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = 'Setup your first project and user.';
+
+    /** @var UserValidator  */
     protected $userValidator;
 
+    /** @var CreateProjectValidator */
     protected $projectValidator;
 
+    /** @var ApplicationRepository */
     protected $applicationRepo;
 
-	/**
-	 * Create a new command instance.
-	 *
-	 * @return void
-	 */
-	public function __construct(UserValidator $validator, ProjectValidator $projectValidator, ApplicationRepository $applicationRepo)
-	{
-		parent::__construct();
+    /** @var CommandBus */
+    private $commandBus;
+
+    /**
+     * Create a new command instance.
+     *
+     * @param UserValidator $validator
+     * @param CreateProjectValidator $projectValidator
+     * @param ApplicationRepository $applicationRepo
+     * @param CommandBus $commandBus
+     * @return \Portico\Task\Console\Install
+     */
+    public function __construct(
+        UserValidator $validator,
+        CreateProjectValidator $projectValidator,
+        ApplicationRepository $applicationRepo,
+        CommandBus $commandBus
+
+    ) {
+        parent::__construct();
 
         $this->userValidator = $validator;
         $this->projectValidator = $projectValidator;
         $this->applicationRepo = $applicationRepo;
-	}
+        $this->commandBus = $commandBus;
+    }
 
-	/**
-	 * Execute the console command.
-	 *
-	 * @return mixed
-	 */
-	public function fire()
-	{
+    public function getCommandBus()
+    {
+        return $this->commandBus;
+    }
+
+    /**
+     * Execute the console command.
+     *
+     * @return mixed
+     */
+    public function fire()
+    {
         if (!$this->tablesExist()) {
             $this->info('The database migrations have not been run.');
-            $response = $this->ask('They are required to continue with this script, do you want to run them now?[Y|N]');
-            if (!in_array($response, ['Y', 'y'])) {
+            $wantsToRunMigrations = $this->confirm('They are required to continue with this script, do you want to run them now?[Y|N]');
+            if (!$wantsToRunMigrations) {
                 return false;
             }
             $this->info('Running database migrations');
@@ -67,31 +102,32 @@ class Install extends AbstractCommand
             return true;
         }
 
+        \DB::beginTransaction();
+
         $this->info('Generating encryption key');
         $this->call('key:generate');
 
-		$this->info('Welcome to Tasker!');
+        $this->info('Welcome to Tasker!');
         $this->info('This will help you setup your account and first project');
-        $user = $this->promptForUserInfo();
+        $user = $this->createUser();
 
         $this->info('');
         $this->info("Hi  {$user->first_name}, lets get started on creating your first project!");
 
-        $project = $this->promptForProjectInfo();
-
-        // Generate a one time token used for login links!
-        $user->createOneTimeToken();
-
-        $user->save();
-        $project->save();
+        $project = $this->createProject();
 
         $application = new Application();
         $application->is_setup = true;
         $application->save();
 
+        // Complete transaction
+        DB::commit();
+
+        $this->executeJob(WatchProjectCommand::class, compact('user', 'project'));
+
         $this->info('Setup complete!');
         $this->info('You can access Tasker here: ' . route('home'));
-	}
+    }
 
     /**
      * Determine if the database tables exists.
@@ -110,48 +146,70 @@ class Install extends AbstractCommand
         return $this->applicationRepo->findSettings()->isAlreadySetup();
     }
 
-    protected function promptForUserInfo()
+    /**
+     * Creates a new user and then saves them to the databse.
+     *
+     * @return User
+     */
+    protected function createUser()
     {
-        $user = new User();
+        $data = [];
 
-        $user->first_name = $this->askQuestionAndValidate(
+        $data['firstName'] = $this->askQuestionAndValidate(
             'What is your first name?',
             $this->userValidator,
             'first_name'
         );
 
-        $user->last_name = $this->askQuestionAndValidate(
+        $data['lastName'] = $this->askQuestionAndValidate(
             'What is your last name?',
             $this->userValidator,
             'last_name'
         );
 
-        $user->email = $this->askQuestionAndValidate(
+        $data['email'] = $this->askQuestionAndValidate(
             'What is your email address?',
             $this->userValidator,
             'email'
         );
 
-
-        return $user;
+        try {
+            return $this->executeJob(CreateUserCommand::class, $data);
+        } catch (ValidationFailedException $exception) {
+            foreach ($exception->getErrors() as $error) {
+                $this->error($error->first());
+                exit(1);
+            }
+        }
     }
 
-    protected function promptForProjectInfo()
+    /**
+     * Prompts user for project information and then saves project to the database.
+     *
+     * @return Project
+     */
+    protected function createProject()
     {
-        $project = new Project();
-
-        $project->name = $this->askQuestionAndValidate(
+        $data['name'] = $this->askQuestionAndValidate(
             'What is the name of your project? ',
             $this->projectValidator,
             'name'
         );
 
-        $project->description = $this->askQuestionAndValidate(
+        $data['description'] = $this->askQuestionAndValidate(
             'Give a project description ',
             $this->projectValidator,
             'description'
         );
 
-        return $project;
+        try {
+            /** @var Project $project */
+            return $this->executeJob(CreateProjectCommand::class, $data);
+        } catch (ValidationFailedException $exception) {
+            foreach ($exception->getErrors() as $error) {
+                $this->error($error->first());
+                exit(1);
+            }
+        }
     }
 }
