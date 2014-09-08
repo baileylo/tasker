@@ -5,11 +5,10 @@ use Portico\Task\Project\Project;
 use Portico\Task\User\User;
 use Portico\Task\Project\ProjectValidator;
 use Portico\Task\Application\ApplicationRepository;
-use Portico\Task\User\UserValidator\UserValidator;
+use Portico\Task\User\UserValidator;
 
 class Install extends AbstractCommand
 {
-
 	/**
 	 * The console command name.
 	 *
