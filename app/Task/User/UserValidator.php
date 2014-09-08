@@ -1,4 +1,4 @@
-<?php namespace Portico\Task\User\UserValidator;
+<?php namespace Portico\Task\User;
 
 use Illuminate\Validation\Factory;
 use Portico\Core\Validator\Validator;
