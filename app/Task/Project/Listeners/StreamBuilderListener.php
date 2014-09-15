@@ -17,8 +17,18 @@ class StreamBuilderListener extends EventListener
         $ticket = $event->getTicket();
         $project = $ticket->project;
 
-        // Combine watchers from project and ticket, thought this really shouldn't matter.
+        // Combine watchers from project and ticket, though this really shouldn't matter.
         $watchers = $project->watchers->merge($ticket->watchers);
+        if ($ticket->assignee) {
+            $watchers->add($ticket->assignee);
+        }
+
+        $watchers->add($ticket->reporter);
+        if ($ticket->reporter) {
+            $watchers->add($ticket->reporter);
+        }
+
+
 
         foreach($watchers as $user) {
             $this->createStreamEntry($user->id, $ticket->id);
