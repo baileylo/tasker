@@ -10,6 +10,10 @@
                 </article>
             @endforeach
 
+            @if($streamItems->isEmpty())
+                <p class="text-muted text-center">There is nothing your stream.</p>
+            @endif
+
         </div>
         <div class="col-lg-4">
             @include('home.partials.sidebar-module', ['title' => 'Recently Updated Tickets', 'tickets' => $updatedTickets, 'message' => 'There are no recently updated tickets.'])
@@ -23,7 +27,10 @@
                             <li><a href="{{{ route('project.view', $project->id) }}}">{{{ $project->name }}}</a></li>
                         @endforeach
                     </ul>
-                    <a href="{{{ route('user.projects') }}}">More</a>
+
+                    @if(Auth::user()->projects->count() > 3)
+                        <a href="{{{ route('user.projects') }}}">More</a>
+                    @endif
                 </div>
             </div>
         </div>
