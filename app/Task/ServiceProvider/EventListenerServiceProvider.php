@@ -1,4 +1,4 @@
-<?php namespace Task\Task\ServiceProvider;
+<?php namespace Portico\Task\ServiceProvider;
 
 use Illuminate\Support\ServiceProvider;
 
@@ -14,8 +14,8 @@ class EventListenerServiceProvider extends ServiceProvider
     {
         $event = $this->app->make('events');
 
-        $event->listen('Task.*', 'Portico\Task\Ticket\Listeners\WatcherListener');
-        $event->listen('Task.*', 'Portico\Task\Project\Listeners\WatcherListener');
-        $event->listen('Task.*', 'Portico\Task\Project\Listeners\StreamBuilderListener');
+        $event->listen('Portico.Task.*', 'Portico\Task\Ticket\Listeners\WatcherListener');
+        $event->listen('Portico.Task.*', 'Portico\Task\Project\Listeners\WatcherListener');
+        $event->listen('Portico.Task.*', 'Portico\Task\Project\Listeners\StreamBuilderListener');
     }
 }
