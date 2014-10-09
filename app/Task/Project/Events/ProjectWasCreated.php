@@ -13,4 +13,12 @@ class ProjectWasCreated
     {
         $this->project = $project;
     }
+
+    /**
+     * @return Project
+     */
+    public function getProject()
+    {
+        return $this->project;
+    }
 } 

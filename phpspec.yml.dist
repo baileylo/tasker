@@ -1,0 +1,12 @@
+suites:
+    unit_suite:
+        namespace: Portico\Task
+        psr4_prefix: Portico\Task
+        src_path: app/Task
+
+extensions:
+    - PhpSpec\Extension\CodeCoverageExtension
+
+code_coverage:
+    whitelist:
+        - ./app/Task

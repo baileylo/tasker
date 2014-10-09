@@ -1,12 +1,12 @@
 <?php namespace Portico\Task\Project;
 
-use Eloquent;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Laracasts\Commander\Events\EventGenerator;
 use Portico\Core\Presenter\Presentable;
 use Portico\Task\Project\Command\CreateProjectCommand;
 use Portico\Task\Project\Events\ProjectWasCreated;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 use Portico\Task\User\User;
 
 /**
@@ -53,21 +53,35 @@ class Project extends Eloquent
     }
 
     /**
-     * Creates a new project, saves a new projects, and raises ProjectWasCreated event.
+     * Adds a watcher if the watcher does not already exist.
      *
-     * @param CreateProjectCommand $command
+     * @param User $user User to become follower
+     *
+     * @return Boolean true if the user was added, false if the user is already watching
+     */
+    public function addWatcher(User $user)
+    {
+        if ($this->watchers->contains($user)) {
+            return false;
+        }
+
+        $this->watchers()->attach($user);
+        $this->watchers->add($user);
+
+        return true;
+    }
+
+    /**
+     * Creates a Saves the passed supplied project and raises events
+     *
      * @return Project
      */
-    public static function createProject(CreateProjectCommand $command)
+    public function saveNewProject()
     {
-        $project = new Project();
-        $project->name = $command->getName();
-        $project->description = $command->getDescription();
+        $this->raise(new ProjectWasCreated($this));
 
-        $project->raise(new ProjectWasCreated($project));
-
-        $project->save();
-
-        return $project;
+        $this->save();
     }
+
+
 } 

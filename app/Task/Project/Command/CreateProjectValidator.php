@@ -1,6 +1,7 @@
 <?php namespace Portico\Task\Project\Command;
 
 use Illuminate\Validation\Factory;
+use Portico\Core\Validator\ValidationFailedException;
 use Portico\Core\Validator\Validator;
 
 class CreateProjectValidator implements Validator

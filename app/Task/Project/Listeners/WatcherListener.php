@@ -1,13 +1,12 @@
 <?php namespace Portico\Task\Project\Listeners;
 
-use Laracasts\Commander\Events\EventListener;
 use Portico\Task\Ticket\Events\TicketWasCreated;
 
-class WatcherListener extends EventListener
+class WatcherListener
 {
-
     /**
-     * Adds watchers upon ticket creation.
+     * When a ticket is created, the reporter and assignee, if present, are made
+     * watchers of the project.
      *
      * @param TicketWasCreated $event
      */
@@ -16,18 +15,10 @@ class WatcherListener extends EventListener
         $ticket = $event->getTicket();
         $project = $ticket->project;
 
-        $watchers = [$ticket->reporter_id];
+        $project->addWatcher($ticket->reporter);
 
-        // If the ticket is assigned to somebody, mark them as a watcher.
-        if ($ticket->assignee_id) {
-            $watchers[] = $ticket->assignee_id;
-        }
-
-        // Remove users who are already watching this project.
-        $watchers = array_diff($watchers, $project->watchers->modelKeys());
-
-        foreach(array_unique($watchers) as $userId) {
-            $project->watchers()->attach($userId);
+        if ($ticket->assignee) {
+            $project->addWatcher($ticket->assignee);
         }
     }
 } 

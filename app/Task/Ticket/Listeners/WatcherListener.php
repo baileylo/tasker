@@ -15,15 +15,11 @@ class WatcherListener extends EventListener
     {
         $ticket = $event->getTicket();
 
-        $watchers = [$ticket->reporter_id];
+        $ticket->addWatcher($ticket->reporter);
 
         // If the ticket is assigned to somebody, mark them as a watcher.
-        if ($ticket->assignee_id) {
-            $watchers[] = $ticket->assignee_id;
-        }
-
-        foreach(array_unique($watchers) as $userId) {
-            $ticket->watchers()->attach($userId);
+        if ($ticket->assignee) {
+            $ticket->addWatcher($ticket->assignee);
         }
     }
 } 
