@@ -17,6 +17,11 @@ var jScript = (function(){
 
         exec: function(moduleNames) {
             walk(moduleNames, function(name) {
+                if (typeof modules[name] != 'function') {
+                    console.error('Failed to execute "' + name + '" module. It appears to be undefined.');
+                    return;
+                }
+
                 modules[name]();
             });
 
