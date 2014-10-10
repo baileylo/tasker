@@ -20,7 +20,7 @@ class Manager extends Controller
         $input = Input::only('comment', 'status');
 
         if ($errors = $this->closeTicketValidator->getErrors($input)) {
-            return Redirect::back()->withInput()->withErrors($errors);
+            return Redirect::back()->withInput()->withErrors($errors, 'closeTicket');
         }
 
         $comment = new Comment();

@@ -20,7 +20,7 @@ class Create extends Controller
         $data = Input::only(['comment']);
 
         if ($errors = $this->validator->getErrors($data)) {
-            return Redirect::back()->withInput()->withErrors($errors);
+            return Redirect::back()->withInput()->withErrors($errors, 'addComment');
         }
 
         $comment = new Comment();

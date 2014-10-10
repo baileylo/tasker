@@ -26,13 +26,13 @@
     </div>
 </div>
 
-<div class="row" id="close-button-wrapper">
+<div class="row @if(!$closeTicketErrors->isEmpty() || $ticket->isClosed()) hidden @endif " id="close-button-wrapper">
     <div class="col-lg-12">
         <a href="#" class="btn btn-lg btn-danger toggleable" data-hide-selector="#close-button-wrapper" data-toggle-selector="#close-ticket-form">Close Ticket</a>
     </div>
 </div>
 
-<div id="close-ticket-form" class="hidden">
+<div id="close-ticket-form" @if($closeTicketErrors->isEmpty()) class="hidden" @endif>
     <div class="row">
         <div class="col-lg-12">
             <h4>Close Ticket</h4>
@@ -42,21 +42,21 @@
     <div class="row">
         <div class="col-lg-12">
             {{ Form::open(["role" => "form", 'action' => ['ticket.close', $ticket->project_id, $ticket->id]]) }}
-            <div class="form-group @if($errors->has('status')) has-error @endif">
+            <div class="form-group @if($closeTicketErrors->has('status')) has-error @endif">
                 {{ Form::label('Status:') }}
 
-                @if($errors->has('status'))
-                <p class="text-danger">{{ $errors->first('status') }}</p>
+                @if($closeTicketErrors->has('status'))
+                    <p class="text-danger">{{ $closeTicketErrors->first('status') }}</p>
                 @endif
 
                 {{ Form::select('status', \Portico\Task\Ticket\Enum\Status::readableClosed(), null, ['class' => 'form-control']) }}
             </div>
 
-            <div class="form-group @if($errors->has('comment')) has-error @endif">
+            <div class="form-group @if($closeTicketErrors->has('comment')) has-error @endif">
                 {{ Form::label('Message:') }}
 
-                @if($errors->has('comment'))
-                <p class="text-danger">{{ $errors->first('comment') }}</p>
+                @if($closeTicketErrors->has('comment'))
+                    <p class="text-danger">{{ $closeTicketErrors->first('comment') }}</p>
                 @endif
 
                 {{ Form::textarea('comment', null, ['class' => 'form-control']) }}
@@ -83,9 +83,9 @@
         <div class="col-lg-12">
             {{ Form::open(["role" => "form", 'action' => ['ticket.comment.add', $ticket->project_id, $ticket->id]]) }}
 
-            <div class="form-group @if($errors->has('comment')) has-error @endif">
-                @if($errors->has('comment'))
-                <p class="text-danger">{{ $errors->first('comment') }}</p>
+            <div class="form-group @if($commentErrors->has('comment')) has-error @endif">
+                @if($commentErrors->has('comment'))
+                    <p class="text-danger">{{ $commentErrors->first('comment') }}</p>
                 @endif
 
                 {{ Form::textarea('comment', null, ['class' => 'form-control']) }}
