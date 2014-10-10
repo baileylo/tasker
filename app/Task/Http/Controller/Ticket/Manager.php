@@ -5,7 +5,6 @@ use Portico\Task\Comment\Comment;
 use Portico\Task\Ticket\Ticket;
 use Portico\Task\Ticket\Validator\CloseTicketValidator;
 
-
 class Manager extends Controller
 {
     /** @var CloseTicketValidator  */
