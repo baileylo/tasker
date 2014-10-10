@@ -1,12 +1,10 @@
 jScript.add('authentication', function() {
-    var signinLink = document.getElementById('signin');
-    if (signinLink) {
-        signinLink.onclick = function () {
-            navigator.id.request({
-                siteName: "Tasker"
-            });
-        };
-    }
+
+    $('.signin').on('click', function () {
+        navigator.id.request({
+            siteName: "Tasker"
+        });
+    });
 
     var signoutLink = document.getElementById('signout');
     if (signoutLink) {

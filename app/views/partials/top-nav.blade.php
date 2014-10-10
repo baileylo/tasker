@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <ul class="nav navbar-nav navbar-right">
                 @if(!Auth::check())
-                    <li><a href="#" id="signin">Sign In</a></li>
+                    <li><a href="#" class="signin">Sign In</a></li>
                 @else
                 <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi, {{ Auth::user()->present()->full_name }} <span class="caret"></span></a>
