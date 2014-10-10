@@ -5,11 +5,15 @@
 	"license": "MIT",
 	"require": {
 		"laravel/framework": "4.2.*",
-        "barryvdh/laravel-ide-helper": "1.*",
         "guzzlehttp/guzzle": "4.1.2",
         "doctrine/dbal": "2.4.2",
         "laracasts/commander": "~1.0"
 	},
+    "require-dev": {
+        "phpspec/phpspec": "~2.1@dev",
+        "henrikbjorn/phpspec-code-coverage": "~0.2",
+        "barryvdh/laravel-ide-helper": "1.*"
+    },
 	"autoload": {
 		"classmap": [
 			"app/database/migrations",

@@ -1,6 +1,6 @@
 <?php namespace Portico\Task\Comment;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
  * Task\Model\Comment

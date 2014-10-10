@@ -10,29 +10,14 @@
                 </article>
             @endforeach
 
+            @if($streamItems->isEmpty())
+                <p class="text-muted text-center">There is nothing your stream.</p>
+            @endif
+
         </div>
         <div class="col-lg-4">
-            <div class="row">
-                <div class="col-lg-12 sidebar-module">
-                    <h1 class="sidebar-module-header">Recently Updated Tickets</h1>
-                    <ul class="sidebar-module-list">
-                        @foreach($updatedTickets as $ticket)
-                            <li><a href="{{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}}">{{{ $ticket->name }}}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-lg-12 sidebar-module">
-                    <h1 class="sidebar-module-header">New Tickets</h1>
-                    <ul class="sidebar-module-list">
-                        @foreach($newTickets as $ticket)
-                            <li><a href="{{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}}">{{{ $ticket->name }}}</a></li>
-                        @endforeach
-                    </ul>
-                </div>
-            </div>
+            @include('home.partials.sidebar-module', ['title' => 'Recently Updated Tickets', 'tickets' => $updatedTickets, 'message' => 'There are no recently updated tickets.'])
+            @include('home.partials.sidebar-module', ['title' => 'New Tickets', 'tickets' => $newTickets, 'message' => 'There are no new tickets.'])
 
             <div class="row">
                 <div class="col-lg-12 sidebar-module">
@@ -42,7 +27,10 @@
                             <li><a href="{{{ route('project.view', $project->id) }}}">{{{ $project->name }}}</a></li>
                         @endforeach
                     </ul>
-                    <a href="{{{ route('user.projects') }}}">More</a>
+
+                    @if(Auth::user()->projects->count() > 3)
+                        <a href="{{{ route('user.projects') }}}">More</a>
+                    @endif
                 </div>
             </div>
         </div>

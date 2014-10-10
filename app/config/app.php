@@ -78,7 +78,7 @@ return array(
 	|
 	*/
 
-	'key' => 'SKwaU94g3nxsKPkxvB24JnhC7eY57viA',
+	'key' => '5flxbmtUpMFJHaYzvkMp2XZkiFQ2RFH1',
 
 	'cipher' => MCRYPT_RIJNDAEL_128,
 
@@ -125,6 +125,7 @@ return array(
         'Portico\Task\ServiceProvider\RouteBinder',
         'Laracasts\Commander\CommanderServiceProvider',
         'Portico\Task\ServiceProvider\ArtisanServiceProvider',
+        'Portico\Task\ServiceProvider\EventListenerServiceProvider',
 	),
 
 	/*

@@ -1,6 +1,7 @@
 <?php namespace Portico\Task\UserStream;
 
-use Eloquent;
+use Illuminate\Database\Eloquent\Model as Eloquent;
+use Illuminate\Database\Query\Builder;
 
 /**
  * Task\UserStream
@@ -9,10 +10,10 @@ use Eloquent;
  * @property integer $user_id
  * @property integer $object_id
  * @property integer $type
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\UserStream\UserStream whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\UserStream\UserStream whereUserId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\UserStream\UserStream whereObjectId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\UserStream\UserStream whereType($value)
+ * @method static Builder|UserStream whereId($value)
+ * @method static Builder|UserStream whereUserId($value)
+ * @method static Builder|UserStream whereObjectId($value)
+ * @method static Builder|UserStream whereType($value)
  */
 class UserStream extends Eloquent
 {

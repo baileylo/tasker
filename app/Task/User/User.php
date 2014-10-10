@@ -1,8 +1,14 @@
 <?php namespace Portico\Task\User;
 
-use Eloquent;
 use Illuminate\Auth\UserInterface;
+use Illuminate\Database\Query\Builder;
+use Laracasts\Commander\Events\EventGenerator;
 use Portico\Core\Presenter\Presentable;
+use Portico\Task\Project\Project;
+use Portico\Task\User\Command\CreateUserCommand;
+use Portico\Task\User\Events\ProjectWasWatched;
+use Portico\Task\User\Events\UserWasCreated;
+use Illuminate\Database\Eloquent\Model as Eloquent;
 
 /**
  * Task\Model\User
@@ -14,17 +20,18 @@ use Portico\Core\Presenter\Presentable;
  * @property integer    $logout_at
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereId($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereFirstName($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereLastName($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereEmail($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereLogoutAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereCreatedAt($value)
- * @method static \Illuminate\Database\Query\Builder|\Portico\Task\User\User whereUpdatedAt($value)
+ * @method static Builder|User whereId($value)
+ * @method static Builder|User whereFirstName($value)
+ * @method static Builder|User whereLastName($value)
+ * @method static Builder|User whereEmail($value)
+ * @method static Builder|User whereLogoutAt($value)
+ * @method static Builder|User whereCreatedAt($value)
+ * @method static Builder|User whereUpdatedAt($value)
  */
 class User extends Eloquent implements UserInterface
 {
     use Presentable;
+    use EventGenerator;
 
     protected $presenterName = 'Portico\Task\User\Presenter';
 
@@ -92,8 +99,23 @@ class User extends Eloquent implements UserInterface
         return $this->belongsToMany('Portico\Task\Project\Project', 'user_projects');
     }
 
-    public function createOneTimeToken()
+    public function watchProject(Project $project)
     {
-        $this->one_time_token = \Str::random(32);
+        $this->projects()->save($project);
+        $this->raise(new ProjectWasWatched($this, $project));
+    }
+
+    public static function createUser(CreateUserCommand $command)
+    {
+        $user = new User();
+        $user->email = $command->getEmail();
+        $user->first_name = $command->getFirstName();
+        $user->last_name = $command->getLastName();
+
+        $user->save();
+
+        $user->raise(new UserWasCreated($user));
+
+        return $user;
     }
 }

@@ -23,6 +23,7 @@ class Eloquent implements UserStreamRepository
     {
         return $this->orm
             ->whereUserId($userId)
+            ->orderBy('created_at', 'desc')
             ->simplePaginate($pageSize);
     }
 }

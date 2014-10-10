@@ -27,7 +27,7 @@
                 <p class="text-danger">{{ $errors->first('type') }}</p>
             @endif
 
-            {{ Form::select('type', Task\Model\Ticket\Type::readable(), null, ['class' => 'form-control']) }}
+            {{ Form::select('type', Portico\Task\Ticket\Enum\Type::readable(), null, ['class' => 'form-control']) }}
         </div>
 
         <div class="form-group @if($errors->has('assignee')) has-error @endif">

@@ -31,7 +31,7 @@ class Create extends Controller
         $data['creator'] = Auth::user();
 
         try {
-           $this->execute(CreateTicketCommand::class, $data, ['Task\\Ticket\\AssigneeConverter']);
+           $this->execute(CreateTicketCommand::class, $data, ['Portico\Task\Ticket\Command\Decorator\AssigneeConverter']);
         }
         catch(ValidationFailedException $exception)
         {

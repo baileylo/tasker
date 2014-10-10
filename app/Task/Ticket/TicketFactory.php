@@ -12,8 +12,13 @@ class TicketFactory
     public function makeFromCommand(CreateTicketCommand $command)
     {
         $ticket = new Ticket();
-        $ticket->reporter()->associate($command->getCreator());
-        $ticket->project()->associate($command->getProject());
+        $ticket->setProject($command->getProject());
+        $ticket->setReporter($command->getCreator());
+
+        if ($command->getAssignee()) {
+            $ticket->setAssignee($command->getAssignee());
+        }
+
         $ticket->description = $command->getDescription();
         $ticket->name = $command->getName();
         $ticket->type = intval($command->getType());
@@ -21,10 +26,6 @@ class TicketFactory
 
         if ($command->getDueDate()) {
             $ticket->due_at = $command->getDueDate();
-        }
-
-        if ($command->getAssignee()) {
-            $ticket->assignee()->associate($command->getAssignee());
         }
 
         return $ticket;

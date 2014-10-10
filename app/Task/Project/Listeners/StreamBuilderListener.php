@@ -2,10 +2,20 @@
 
 use Laracasts\Commander\Events\EventListener;
 use Portico\Task\Ticket\Events\TicketWasCreated;
+use Portico\Task\Ticket\Ticket;
+use Portico\Task\User\User;
 use Portico\Task\UserStream\UserStream;
+use Portico\Task\UserStream\UserStreamFactory;
 
 class StreamBuilderListener extends EventListener
 {
+    /** @var UserStreamFactory */
+    private $streamFactory;
+
+    public function __construct(UserStreamFactory $streamFactory)
+    {
+        $this->streamFactory = $streamFactory;
+    }
 
     /**
      * Adds watchers upon ticket creation.
@@ -17,22 +27,12 @@ class StreamBuilderListener extends EventListener
         $ticket = $event->getTicket();
         $project = $ticket->project;
 
-        // Combine watchers from project and ticket, thought this really shouldn't matter.
+        // Combine watchers from project and ticket, though this really shouldn't matter.
         $watchers = $project->watchers->merge($ticket->watchers);
 
         foreach($watchers as $user) {
-            $this->createStreamEntry($user->id, $ticket->id);
+            $streamEntry = $this->streamFactory->make($user, $ticket, UserStream::TYPE_TICKET_CREATED);
+            $streamEntry->save();
         }
-    }
-
-    protected function createStreamEntry($userId, $ticketId)
-    {
-        $streamEntry = new UserStream();
-        $streamEntry->user_id = $userId;
-        $streamEntry->object_id = $ticketId;
-        $streamEntry->type = UserStream::TYPE_TICKET_CREATED;
-        $streamEntry->save();
-
-        return $streamEntry;
     }
 } 

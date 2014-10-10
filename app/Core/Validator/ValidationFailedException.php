@@ -9,7 +9,7 @@ class ValidationFailedException extends \Exception
      */
     private $errors;
 
-    public function __construct(MessageBag $errors) {
+    public function __construct(MessageBag $errors = null) {
 
         $this->errors = $errors;
     }

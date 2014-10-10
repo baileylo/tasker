@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
+use Portico\Task\Ticket\Enum\Status;
 
 class CreateTicketsTable extends Migration {
 
@@ -18,7 +19,7 @@ class CreateTicketsTable extends Migration {
             $table->string('name');
             $table->text('description');
             $table->unsignedInteger('type');
-            $table->tinyInteger('status', false, true)->default(\Task\Model\Ticket\Status::WAITING);
+            $table->tinyInteger('status', false, true)->default(Status::WAITING);
             $table->unsignedInteger('reporter_id');
             $table->unsignedInteger('project_id');
             $table->unsignedInteger('assignee_id')->nullable();
