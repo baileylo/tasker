@@ -13,3 +13,7 @@ composer.lock
 .DS_Store
 Thumbs.db
 coverage
+
+*.sqlite
+
+app/database/production.sqlite
