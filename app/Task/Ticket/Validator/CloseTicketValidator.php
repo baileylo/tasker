@@ -2,9 +2,10 @@
 
 use Illuminate\Validation\Factory;
 use Portico\Core\Enum\LaravelValidatorBridge;
+use Portico\Task\Comment\CommentValidator;
 use Portico\Task\Ticket\Enum\Status;
 
-class CloseTicketValidator extends TicketValidator
+class CloseTicketValidator extends CommentValidator
 {
     /** @var \Illuminate\Validation\Factory  */
     protected $factory;
