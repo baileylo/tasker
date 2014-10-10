@@ -1,8 +1,9 @@
 <?php namespace Portico\Task\Project\Listeners;
 
+use Laracasts\Commander\Events\EventListener;
 use Portico\Task\Ticket\Events\TicketWasCreated;
 
-class WatcherListener
+class WatcherListener extends EventListener
 {
     /**
      * When a ticket is created, the reporter and assignee, if present, are made

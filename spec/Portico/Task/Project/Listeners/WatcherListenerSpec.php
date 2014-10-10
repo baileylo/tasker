@@ -3,6 +3,7 @@
 namespace spec\Portico\Task\Project\Listeners;
 
 use Illuminate\Database\Connection;
+use Laracasts\Commander\Events\EventListener;
 use PhpSpec\ObjectBehavior;
 use Portico\Core\PhpSpec\Relatable;
 use Portico\Task\Project\Project;
@@ -24,6 +25,7 @@ class WatcherListenerSpec extends ObjectBehavior
     function it_is_initializable()
     {
         $this->shouldHaveType(WatcherListener::class);
+        $this->beAnInstanceOf(EventListener::class);
     }
 
     protected function build_ticket(Project $project)
