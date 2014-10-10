@@ -32,7 +32,7 @@ var jScript = (function(){
 window.onload = function() {
     var modules = [];
 
-    jScript.walk(document.getElementById('js-included-modules').value.split(','), function(moduleName) {
+    jScript.walk(document.getElementById('js-included-modules').value.split(' '), function(moduleName) {
         moduleName = moduleName.trim();
         if (moduleName.length) modules.push(moduleName);
     });
