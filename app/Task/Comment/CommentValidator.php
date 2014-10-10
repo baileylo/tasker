@@ -1,4 +1,4 @@
-<?php namespace Portico\Task\Validator\Comment;
+<?php namespace Portico\Task\Comment;
 
 use Illuminate\Validation\Factory;
 use Portico\Core\Validator\Validator;

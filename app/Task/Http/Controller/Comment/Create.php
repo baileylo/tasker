@@ -3,7 +3,7 @@
 use Controller, Input, Auth, Redirect;
 use Portico\Task\Comment\Comment;
 use Portico\Task\Ticket\Ticket;
-use Portico\Task\Validator\Comment\CommentValidator;
+use Portico\Task\Comment\CommentValidator;
 
 class Create extends Controller
 {
