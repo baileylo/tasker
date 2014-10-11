@@ -88,6 +88,7 @@ class Eloquent implements TicketRepository
      * Prepares a query which will return all tickets from projects that a given user follows.
      *
      * @param int $userId
+     *
      * @return \Illuminate\Database\Query\Builder
      */
     protected function findTicketsWatchedByProject($userId)
@@ -100,7 +101,7 @@ class Eloquent implements TicketRepository
         ];
 
         /** @var \Illuminate\Database\Eloquent\Relations\BelongsToMany $projectWatchersRelationship */
-        $projectWatchersRelationship =  $this->orm->project()->getRelated()->watchers();
+        $projectWatchersRelationship = $this->orm->project()->getRelated()->watchers();
 
         $userProjects = [
             'table' => $projectWatchersRelationship->getTable(),
@@ -119,7 +120,8 @@ class Eloquent implements TicketRepository
      * Finds the newest tickets from all projects that a given user follows
      *
      * @param int   $userId
-     * @param array $relationships
+     * @param int   $limit
+     *
      * @return Ticket[]
      */
     public function findNewTicketsForProjectsFollowedByUser($userId, $limit)
@@ -133,8 +135,9 @@ class Eloquent implements TicketRepository
     /**
      * Finds the most recently update tickets from all projects that a given user follows
      *
-     * @param int $userId
+     * @param int   $userId
      * @param array $relationships
+     *
      * @return Ticket[]
      */
     public function findRecentlyUpdatedTicketsForProjectsFollowedByUser($userId, $limit, array $relationships = [])
