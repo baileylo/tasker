@@ -163,4 +163,30 @@ class Eloquent implements TicketRepository
             ->limit($limit)
             ->get();
     }
+
+    /**
+     * Number of open issues in a project
+     *
+     * @param int $projectId
+     *
+     * @return mixed
+     */
+    public function countProjectsOpenIssues($projectId)
+    {
+        return $this->getQueryForProjectsTicketsAndStatus(Status::OPEN, $projectId, 0, [])
+            ->count();
+    }
+
+    /**
+     * Number of closed issues in a project
+     *
+     * @param int $projectId
+     *
+     * @return int
+     */
+    public function countProjectsClosedIssues($projectId)
+    {
+        return $this->getQueryForProjectsTicketsAndStatus(Status::CLOSED, $projectId, 0, [])
+            ->count();
+    }
 }

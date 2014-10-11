@@ -45,6 +45,24 @@ interface TicketRepository
     public function findsProjectsMostRecentClosedTickets($projectId, $limit, array $relationships = []);
 
     /**
+     * Number of open issues in a project
+     *
+     * @param int $projectId
+     *
+     * @return mixed
+     */
+    public function countProjectsOpenIssues($projectId);
+
+    /**
+     * Number of closed issues in a project
+     *
+     * @param int $projectId
+     *
+     * @return int
+     */
+    public function countProjectsClosedIssues($projectId);
+
+    /**
      * Finds the newest tickets from all projects that a given user follows
      *
      * @param int   $userId
