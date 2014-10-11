@@ -4,9 +4,9 @@ use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Query\Builder;
 use Laracasts\Commander\Events\EventGenerator;
 use Portico\Core\Presenter\Presentable;
-use Portico\Task\Project\Command\CreateProjectCommand;
 use Portico\Task\Project\Events\ProjectWasCreated;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Portico\Task\Ticket\Enum\Status;
 use Portico\Task\User\User;
 
 /**
@@ -14,6 +14,10 @@ use Portico\Task\User\User;
  *
  * @property-read Collection|\Portico\Task\Ticket\Ticket[] $tickets
  * @property-read Collection|\Portico\Task\User\User[] $watchers
+ * @property-read Collection|\Portico\Task\Ticket\Ticket[] $openTickets
+ * @property-read Collection|\Portico\Task\Ticket\Ticket[] $closedTickets
+ * @property-read int $open_ticket_count
+ * @property-read int $closed_ticket_count
  * @property integer        $id
  * @property string         $name
  * @property string         $description
@@ -45,11 +49,73 @@ class Project extends Eloquent
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function openTickets()
+    {
+        return $this->tickets()
+            ->whereRaw('(status & ?) = '. intval(Status::OPEN), [Status::OPEN]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function openTicketCount()
+    {
+        return $this->openTickets()->selectRaw('project_id, count(*) as count')->groupBy('project_id')->limit(1);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function closedTickets()
+    {
+        return $this->tickets()
+            ->whereRaw('(status & ?) = '. intval(Status::CLOSED), [Status::CLOSED]);
+    }
+
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function closedTicketCount()
+    {
+        return $this->closedTickets()->selectRaw('project_id, count(*) as count')->groupBy('project_id')->limit(1);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchers()
     {
         return $this->belongsToMany('Portico\Task\User\User', 'user_projects');
+    }
+
+    public function getOpenTicketCountAttribute()
+    {
+        if (!isset($this->getRelations()['openTicketCount'])) {
+            // Load the openTicketCount relationship.
+            $this->getRelationshipFromMethod('openTicketCount', 'openTicketCount');
+        }
+
+        if ($this->getRelation('openTicketCount')->first()) {
+            return intval($this->getRelation('openTicketCount')->first()->count);
+        }
+
+        return 0;
+    }
+
+    public function getClosedTicketCountAttribute()
+    {
+        if (!isset($this->getRelations()['closedTicketCount'])) {
+            // Load the openTicketCount relationship.
+            $this->getRelationshipFromMethod('closedTicketCount', 'closedTicketCount');
+        }
+
+        if ($this->getRelation('closedTicketCount')->first()) {
+            return intval($this->getRelation('closedTicketCount')->first()->count);
+        }
+
+        return 0;
     }
 
     /**

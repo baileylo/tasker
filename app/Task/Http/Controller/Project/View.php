@@ -17,18 +17,14 @@ class View extends Controller
 
     public function show(Project $project)
     {
-        $open = $this->ticketRepository->findProjectsMostRecentOpenTickets($project->id, 5);
-        $closed = $this->ticketRepository->findsProjectsMostRecentClosedTickets($project->id, 5);
-        $upcoming = $this->ticketRepository->findProjectsOpenTicketsDueSoon($project->id, 5);
+        $open = $project->openTickets()->limit(5)->orderBy('updated_at', 'desc')->get();
+        $closed = $project->closedTickets()->limit(5)->orderBy('updated_at', 'desc')->get();
+        $upcoming = $project->openTickets()->whereNotNull('due_at')->limit(5)->orderBy('due_at', 'desc')->get();
 
-        $openIssueCount = $this->ticketRepository->countProjectsOpenIssues($project->id);
-        $closedIssueCount = $this->ticketRepository->countProjectsClosedIssues($project->id);
+        $openIssueCount = $project->open_ticket_count;
+        $closedIssueCount = $project->closed_ticket_count;
 
-        // Open Tickets
-        // This might want to be moved into a repository?
-        $tickets = $project->tickets()
-            ->whereRaw('(tickets.status & ?) = ' . Status::OPEN, [Status::OPEN])
-            ->with(['commentCount', 'reporter'])
+        $tickets = $project->openTickets()->with(['commentCount', 'reporter'])
             ->orderBy('tickets.created_at')
             ->paginate(15);
 
