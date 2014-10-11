@@ -14,6 +14,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 /**
  * Task\Model\Ticket
  *
+ * @property-read int                           $commentCount
  * @property-read \Portico\Task\User\User       $reporter
  * @property-read \Portico\Task\Project\Project $project
  * @property-read \Portico\Task\User\User       $assignee
@@ -92,6 +93,14 @@ class Ticket extends Eloquent implements StreamItem
     }
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function commentCount()
+    {
+        return $this->hasMany('Portico\Task\Comment\Comment')->selectRaw('ticket_id, count(*) as count')->groupBy('ticket_id');
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsToMany
      */
     public function watchers()
@@ -107,6 +116,16 @@ class Ticket extends Eloquent implements StreamItem
     public function getDates()
     {
         return ['created_at', 'updated_at', 'due_at'];
+    }
+
+    public function getCommentCountAttribute()
+    {
+
+        if ($this->getRelation('commentCount')->first()) {
+            return intval($this->getRelation('commentCount')->first()->count);
+        }
+
+        return 0;
     }
 
 
