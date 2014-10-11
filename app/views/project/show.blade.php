@@ -19,45 +19,61 @@
 
 <div class="row">
     <div class="col-lg-4">
-        <h3>Latest Tickets</h3>
-        @if(!$open->count())
-            <p>There are no open tickets.</p>
-        @else
-            <ul>
-                @foreach($open as $ticket)
-                    <li><a href="{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}">{{{ $ticket->name }}}</a></li>
+        @include('partials.ticket-panel', ['header' => 'Latest Tickets', 'emptyMessage' => 'There are no open tickets', 'tickets' => $open])
+    </div>
+
+    <div class="col-lg-4">
+        @include('partials.ticket-panel', ['header' => 'Due Soon', 'emptyMessage' => 'There are no open tickets with a due date', 'tickets' => $upcoming])
+    </div>
+
+    <div class="col-lg-4">
+        @include('partials.ticket-panel', ['header' => 'Recently Closed', 'emptyMessage' => 'No tickets have been closed yet', 'tickets' => $closed])
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-12">
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading">
+                <div class="row">
+                    <div class="col-lg-3">
+                        <span>
+                            <span class="glyphicon glyphicon-unchecked"></span>
+                            {{{ $openIssueCount }}}
+                            Open
+                        </span>
+
+                        <span style="padding-left:5px;" class="text-muted">
+                            <span class="glyphicon glyphicon-check"></span>
+                            {{{ $closedIssueCount }}}
+                            Closed
+                        </span>
+                    </div>
+                    <div class="col-lg-6 col-lg-offset-3">
+                        Hello World!
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <table class="table table-hover">
+                @foreach($tickets as $ticket)
+                    <tr>
+                        <td><span class="glyphicon glyphicon-unchecked"></span></td>
+                        <td>
+                            <a class="" href="{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}">{{{ $ticket->name }}}</a><br />
+                            <span class="text-muted">#{{{ $ticket->id }}} open on {{{ $ticket->created_at->format('Y-m-d') }}} by {{{ $ticket->reporter->present()->full_name }}}</span>
+                        </td>
+                        <td>
+                            Comments <span class="badge">{{{ $ticket->commentCount }}}</span>
+                        </td>
+
+                    </tr>
+
                 @endforeach
-            </ul>
-        @endif
-
-    </div>
-
-    <div class="col-lg-4">
-        <h3>Due Soon</h3>
-        @if(!$upcoming->count())
-            <p>There are no open tickets with a due date.</p>
-        @else
-        <ul>
-            @foreach($upcoming as $ticket)
-            <li><a href="{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}">{{{ $ticket->name }}}</a></li>
-            @endforeach
-        </ul>
-        @endif
-
-    </div>
-
-    <div class="col-lg-4">
-        <h3>Recently Closed Tickets</h3>
-        @if(!$closed->count())
-            <p>No tickets have been closed yet.</p>
-        @else
-        <ul>
-            @foreach($closed as $ticket)
-            <li><a href="{{ route('ticket.view', [$ticket->project_id, $ticket->id]) }}">{{{ $ticket->name }}}</a></li>
-            @endforeach
-        </ul>
-        @endif
-
+            </table>
+        </div>
     </div>
 </div>
 
