@@ -97,7 +97,7 @@ class Ticket extends Eloquent implements StreamItem
      */
     public function commentCount()
     {
-        return $this->hasMany('Portico\Task\Comment\Comment')->selectRaw('ticket_id, count(*) as count')->groupBy('ticket_id');
+        return $this->comments()->selectRaw('ticket_id, count(*) as count')->groupBy('ticket_id');
     }
 
     /**
