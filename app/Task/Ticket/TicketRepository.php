@@ -16,30 +16,33 @@ interface TicketRepository
      *
      * @param int       $projectId
      * @param string[]  $relationships
+     * @param int       $limit
      *
      * @return Ticket[]
      */
-    public function findProjectsMostRecentOpenTickets($projectId, array $relationships = []);
+    public function findProjectsMostRecentOpenTickets($projectId, $limit, array $relationships = []);
 
     /**
      * Finds the tickets with the closest deadline.
      *
      * @param int       $projectId
      * @param string[]  $relationships
+     * @param int       $limit
      *
      * @return Ticket[]
      */
-    public function findProjectsOpenTicketsDueSoon($projectId, array $relationships = []);
+    public function findProjectsOpenTicketsDueSoon($projectId, $limit, array $relationships = []);
 
     /**
      * Finds the tickets that have been closed most recently
      *
      * @param int       $projectId
      * @param string[]  $relationships
+     * @param int       $limit
      *
      * @return Ticket[]
      */
-    public function findsProjectsMostRecentClosedTickets($projectId, array $relationships = []);
+    public function findsProjectsMostRecentClosedTickets($projectId, $limit, array $relationships = []);
 
     /**
      * Finds the newest tickets from all projects that a given user follows

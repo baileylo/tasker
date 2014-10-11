@@ -1,5 +1,6 @@
 <?php namespace Portico\Task\Ticket\Repository;
 
+use Illuminate\Database\Eloquent\Builder;
 use Portico\Task\Ticket\Enum\Status;
 use Portico\Task\Ticket\TicketRepository;
 use Portico\Task\Ticket\Ticket;
@@ -17,7 +18,7 @@ class Eloquent implements TicketRepository
     }
 
     /**
-     * @param int $ticketId
+     * @param int      $ticketId
      * @param string[] $relationships
      *
      * @return Ticket|Null
@@ -27,26 +28,40 @@ class Eloquent implements TicketRepository
         return $this->orm->with($relationships)->find(intval($ticketId));
     }
 
-    private function getQueryForProjectsTicketsAndStatus($status, $projectId, $relationships)
+    /**
+     * @param int $status       Ticket Status
+     * @param int $projectId    Project id of ticket
+     * @param int|null $limit   Number of tickets to return
+     * @param array|string $relationships   Relationships to eager load.
+     *
+     * @return Builder
+     */
+    private function getQueryForProjectsTicketsAndStatus($status, $projectId, $limit, $relationships)
     {
-        return $this->orm->with($relationships)
+        $query = $this->orm->with($relationships)
             ->whereProjectId($projectId)
             // Status is not passed in as a parameter here a second time, because it will be bound as a string and
             // in some databases this will cause incorrect comparisons(sqlite)
-            ->whereRaw('(status & ?) = ' . intval($status), [$status]);
+            ->whereRaw('(status & ?) = ' . intval($status), [$status])
+
+            // If $limit is <= 0 no limit will be applied.
+            ->limit(intval($limit));
+
+        return $query;
     }
 
     /**
      * Finds the most recent tickets that are associated with open tickets
      *
-     * @param int $projectId
+     * @param int      $projectId
+     * @param int      $limit           The maximum number of tickets returned
      * @param string[] $relationships
      *
      * @return Ticket[]
      */
-    public function findProjectsMostRecentOpenTickets($projectId, array $relationships = [])
+    public function findProjectsMostRecentOpenTickets($projectId, $limit, array $relationships = [])
     {
-        return $this->getQueryForProjectsTicketsAndStatus(Status::OPEN, intval($projectId), $relationships)
+        return $this->getQueryForProjectsTicketsAndStatus(Status::OPEN, intval($projectId), $limit, $relationships)
             ->orderBy('updated_at', 'desc')
             ->get();
     }
@@ -54,14 +69,15 @@ class Eloquent implements TicketRepository
     /**
      * Finds the tickets with the closest deadline.
      *
-     * @param int $projectId
+     * @param int      $projectId
+     * @param int      $limit
      * @param string[] $relationships
      *
      * @return Ticket[]
      */
-    public function findProjectsOpenTicketsDueSoon($projectId, array $relationships = [])
+    public function findProjectsOpenTicketsDueSoon($projectId, $limit, array $relationships = [])
     {
-        return $this->getQueryForProjectsTicketsAndStatus(Status::OPEN, intval($projectId), $relationships)
+        return $this->getQueryForProjectsTicketsAndStatus(Status::OPEN, intval($projectId), $limit, $relationships)
             ->whereNotNull('due_at')
             ->orderBy('due_at', 'asc')
             ->get();
@@ -70,17 +86,17 @@ class Eloquent implements TicketRepository
     /**
      * Finds the tickets that have been closed most recently
      *
-     * @param int $projectId
+     * @param int      $projectId
+     * @param int      $limit
      * @param string[] $relationships
      *
      * @return Ticket[]
      */
-    public function findsProjectsMostRecentClosedTickets($projectId, array $relationships = [])
+    public function findsProjectsMostRecentClosedTickets($projectId, $limit, array $relationships = [])
     {
-        return $this->orm->with($relationships)
-            ->whereProjectId($projectId)
-            ->whereRaw('(status & 8) = 0')
+        return $this->getQueryForProjectsTicketsAndStatus(Status::CLOSED, intval($projectId), $limit, $relationships)
             ->orderBy('updated_at', 'desc')
+            ->limit($limit)
             ->get();
     }
 
