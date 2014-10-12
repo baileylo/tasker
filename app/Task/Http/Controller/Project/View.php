@@ -21,13 +21,10 @@ class View extends Controller
         $closed = $project->closedTickets()->limit(5)->orderBy('updated_at', 'desc')->get();
         $upcoming = $project->openTickets()->whereNotNull('due_at')->limit(5)->orderBy('due_at', 'desc')->get();
 
-        $openIssueCount = $project->open_ticket_count;
-        $closedIssueCount = $project->closed_ticket_count;
-
         $tickets = $project->openTickets()->with(['commentCount', 'reporter'])
             ->orderBy('tickets.created_at')
             ->paginate(15);
 
-        return Template::make('project.show', compact('project', 'open', 'closed', 'upcoming', 'openIssueCount', 'closedIssueCount', 'tickets'));
+        return Template::make('project.show', compact('project', 'open', 'closed', 'upcoming', 'tickets'));
     }
 } 

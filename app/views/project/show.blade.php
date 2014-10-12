@@ -2,19 +2,14 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-10">
-        <h1>{{{ $project->name }}}</h1>
+    <div class="col-lg-12 page-header">
+        <h1>{{{ $project->name }}}<br />
+        <small>{{{ $project->description }}}</small></h1>
     </div>
 
-    <div class="col-lg-2">
-        <a href="{{{ route('ticket.create', [$project->id]) }}}" title="Open Ticket" class="btn btn-success">Open Ticket</a>
-    </div>
-</div>
-
-<div class="row">
-    <div class="col-lg-12">
-        <p>{{{ $project->description }}}</p>
-    </div>
+    {{--<div class="col-lg-2">--}}
+        {{--<a href="{{{ route('ticket.create', [$project->id]) }}}" title="Open Ticket" class="btn btn-success">Open Ticket</a>--}}
+    {{--</div>--}}
 </div>
 
 <div class="row">
@@ -40,13 +35,13 @@
                     <div class="col-lg-3">
                         <span>
                             <span class="glyphicon glyphicon-unchecked"></span>
-                            {{{ $openIssueCount }}}
+                            {{{ $project->openTicketCount }}}
                             Open
                         </span>
 
                         <span style="padding-left:5px;" class="text-muted">
                             <span class="glyphicon glyphicon-check"></span>
-                            {{{ $closedIssueCount }}}
+                            {{{ $project->closedTicketCount }}}
                             Closed
                         </span>
                     </div>
@@ -73,6 +68,8 @@
 
                 @endforeach
             </table>
+
+            {{ $tickets->links() }}
         </div>
     </div>
 </div>
