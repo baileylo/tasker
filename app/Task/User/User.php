@@ -4,6 +4,7 @@ use Illuminate\Auth\UserInterface;
 use Illuminate\Database\Query\Builder;
 use Laracasts\Commander\Events\EventGenerator;
 use Portico\Core\Presenter\Presentable;
+use Portico\SessionUser\SessionUser;
 use Portico\Task\Project\Project;
 use Portico\Task\User\Command\CreateUserCommand;
 use Portico\Task\User\Events\ProjectWasWatched;
@@ -28,7 +29,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
  * @method static Builder|User whereCreatedAt($value)
  * @method static Builder|User whereUpdatedAt($value)
  */
-class User extends Eloquent implements UserInterface
+class User extends Eloquent implements UserInterface, SessionUser
 {
     use Presentable;
     use EventGenerator;

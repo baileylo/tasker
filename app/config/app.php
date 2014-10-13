@@ -126,6 +126,7 @@ return array(
         'Laracasts\Commander\CommanderServiceProvider',
         'Portico\Task\ServiceProvider\ArtisanServiceProvider',
         'Portico\Task\ServiceProvider\EventListenerServiceProvider',
+        'Portico\SessionUser\LaravelSessionUserProvider'
 	),
 
 	/*
