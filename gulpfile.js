@@ -14,7 +14,7 @@ var sassConfig = {
     ]
 };
 
-var jsDir = ['app/assets/js/jScript.js', 'app/assets/js/modules/*'];
+var jsDir = ['app/assets/js/jScript.js', 'app/assets/js/modules/*', 'app/assets/js/pages/*'];
 var targetJsDir = 'public/js';
 
 var bootstrap = 'app/assets/sass/bootstrap';
