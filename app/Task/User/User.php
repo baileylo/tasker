@@ -14,13 +14,13 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 /**
  * Task\Model\User
  *
- * @property integer    $id
- * @property string     $first_name
- * @property string     $last_name
- * @property string     $email
- * @property integer    $logout_at
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
+ * @property integer                                                                              $id
+ * @property string                                                                               $first_name
+ * @property string                                                                               $last_name
+ * @property string                                                                               $email
+ * @property integer                                                                              $logout_at
+ * @property \Carbon\Carbon                                                                       $created_at
+ * @property \Carbon\Carbon                                                                       $updated_at
  * @method static Builder|User whereId($value)
  * @method static Builder|User whereFirstName($value)
  * @method static Builder|User whereLastName($value)
@@ -36,12 +36,12 @@ class User extends Eloquent implements UserInterface, SessionUser
 
     protected $presenterName = 'Portico\Task\User\Presenter';
 
-	/**
-	 * The database table used by the model.
-	 *
-	 * @var string
-	 */
-	protected $table = 'users';
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'users';
 
     /**
      * Get the unique identifier for the user.
@@ -77,6 +77,7 @@ class User extends Eloquent implements UserInterface, SessionUser
      * Set the token value for the "remember me" session.
      *
      * @param  string $value
+     *
      * @return void
      */
     public function setRememberToken($value)
