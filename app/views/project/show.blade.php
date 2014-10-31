@@ -1,15 +1,28 @@
 @extends('layout.master')
 
+@section('js')project.view @stop
+
+
 @section('content')
 <div class="row">
     <div class="col-lg-12 page-header">
-        <h1>{{{ $project->name }}}<br />
-        <small>{{{ $project->description }}}</small></h1>
-    </div>
+        <div class="pull-right">
+            <a href="{{{ route('ticket.create', [$project->id]) }}}" title="Open Ticket" class="btn btn-warning">
+                <span class="glyphicon glyphicon-plus"></span>
+            </a>
+            <a href="{{{ route('project.watch', [$project->id]) }}}" id="watch-project" title="Watch Project" class="btn btn-primary @if(!$user || $user->isWatchingProject($project)) hidden @endif">
+                <span class="glyphicon glyphicon-eye-open"></span>
+            </a>
+            <a href="{{{ route('project.unwatch', [$project->id]) }}}" id="unwatch-project" title="Unwatch Project" class="btn btn-danger @if($user && !$user->isWatchingProject($project)) hidden @endif">
+                <span class="glyphicon glyphicon-eye-close"></span>
+            </a>
+        </div>
 
-    {{--<div class="col-lg-2">--}}
-        {{--<a href="{{{ route('ticket.create', [$project->id]) }}}" title="Open Ticket" class="btn btn-success">Open Ticket</a>--}}
-    {{--</div>--}}
+        <h1>
+            {{{ $project->name }}}<br />
+            <small>{{{ $project->description }}}</small>
+        </h1>
+    </div>
 </div>
 
 <div class="row">

@@ -25,6 +25,8 @@ class View extends Controller
             ->orderBy('tickets.created_at')
             ->paginate(15);
 
-        return Template::make('project.show', compact('project', 'open', 'closed', 'upcoming', 'tickets'));
+        $user = \Auth::user();
+
+        return Template::make('project.show', compact('project', 'user', 'open', 'closed', 'upcoming', 'tickets'));
     }
 } 

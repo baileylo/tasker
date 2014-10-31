@@ -7,6 +7,7 @@ use Portico\Core\Presenter\Presentable;
 use Portico\SessionUser\SessionUser;
 use Portico\Task\Project\Project;
 use Portico\Task\User\Command\CreateUserCommand;
+use Portico\Task\User\Events\ProjectWasUnwatched;
 use Portico\Task\User\Events\ProjectWasWatched;
 use Portico\Task\User\Events\UserWasCreated;
 use Illuminate\Database\Eloquent\Model as Eloquent;
@@ -14,6 +15,7 @@ use Illuminate\Database\Eloquent\Model as Eloquent;
 /**
  * Task\Model\User
  *
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Portico\Task\Project\Project[]        $projects
  * @property integer                                                                              $id
  * @property string                                                                               $first_name
  * @property string                                                                               $last_name
@@ -105,6 +107,24 @@ class User extends Eloquent implements UserInterface, SessionUser
     {
         $this->projects()->save($project);
         $this->raise(new ProjectWasWatched($this, $project));
+    }
+
+    public function stopWatchingProject(Project $project)
+    {
+        $this->projects()->detach($project);
+        $this->raise(new ProjectWasUnwatched($this, $project));
+    }
+
+    /**
+     * Determine if a User is watching a given project
+     *
+     * @param Project $project
+     *
+     * @return bool
+     */
+    public function isWatchingProject(Project $project)
+    {
+        return $this->projects->contains($project);
     }
 
     public static function createUser(CreateUserCommand $command)

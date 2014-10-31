@@ -43,6 +43,8 @@ Route::post('/registration', ['uses' => 'Portico\Task\Http\Controller\User\Regis
 Route::get('/my-projects', ['uses' => 'Portico\Task\Http\Controller\User\Project@show', 'as' => 'user.projects']);
 
 Route::get('/project/{projectId}', ['uses' => 'Portico\Task\Http\Controller\Project\View@show', 'as' => 'project.view']);
+Route::put('/project/{projectId}/watch', ['before' => 'csrf', 'uses' => 'Portico\Task\Http\Controller\Project\Watch@watch', 'as' => 'project.watch']);
+Route::put('/project/{projectId}/unwatch', ['before' => 'csrf', 'uses' => 'Portico\Task\Http\Controller\Project\Watch@unwatch', 'as' => 'project.unwatch']);
 
 Route::get('/project/{projectId}/ticket/create', ['uses' => 'Portico\Task\Http\Controller\Ticket\Create@view', 'as' => 'ticket.create']);
 Route::post('/project/{projectId}/ticket/create', ['uses' => 'Portico\Task\Http\Controller\Ticket\Create@handle', 'as' => 'ticket.create']);
