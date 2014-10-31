@@ -10,27 +10,28 @@ use Portico\Task\Ticket\Events\TicketWasCreated;
 use Portico\Task\User\User;
 use Portico\Task\UserStream\StreamItem;
 use Illuminate\Database\Eloquent\Model as Eloquent;
+use Task\Task\Ticket\Events\TicketWasEdited;
 
 /**
  * Task\Model\Ticket
  *
- * @property-read int                           $commentCount
- * @property-read \Portico\Task\User\User       $reporter
- * @property-read \Portico\Task\Project\Project $project
- * @property-read \Portico\Task\User\User       $assignee
- * @property-read \Illuminate\Database\Eloquent\Collection|\Portico\Task\Comment\Comment[] $comments
+ * @property-read int                                                                       $commentCount
+ * @property-read \Portico\Task\User\User                                                   $reporter
+ * @property-read \Portico\Task\Project\Project                                             $project
+ * @property-read \Portico\Task\User\User                                                   $assignee
+ * @property-read \Illuminate\Database\Eloquent\Collection|\Portico\Task\Comment\Comment[]  $comments
  * @property-read \Illuminate\Database\Eloquent\Collection|\Portico\Task\User\User[]        $watchers
- * @property integer        $id
- * @property string         $name
- * @property string         $description
- * @property integer        $type
- * @property integer        $reporter_id
- * @property integer        $assignee_id
- * @property integer        $project_id
- * @property \Carbon\Carbon $due_at
- * @property \Carbon\Carbon $created_at
- * @property \Carbon\Carbon $updated_at
- * @property integer        $status
+ * @property integer                                                                        $id
+ * @property string                                                                         $name
+ * @property string                                                                         $description
+ * @property integer                                                                        $type
+ * @property integer                                                                        $reporter_id
+ * @property integer                                                                        $assignee_id
+ * @property integer                                                                        $project_id
+ * @property \Carbon\Carbon                                                                 $due_at
+ * @property \Carbon\Carbon                                                                 $created_at
+ * @property \Carbon\Carbon                                                                 $updated_at
+ * @property integer                                                                        $status
  * @method static Builder|Ticket whereId($value)
  * @method static Builder|Ticket whereName($value)
  * @method static Builder|Ticket whereDescription($value)
@@ -159,6 +160,44 @@ class Ticket extends Eloquent implements StreamItem
         $ticket->raise(new TicketWasCreated($ticket));
 
         return $ticket;
+    }
+
+    /**
+     * @param String         $name
+     * @param String         $description
+     * @param \DateTime|null $dueDate
+     * @param Int            $status
+     * @param User           $assignee
+     *
+     * @return array The name of any updated attributes
+     */
+    public function edit($name, $description, $dueDate, $status, User $assignee = null)
+    {
+        if ($this->name !== $name) {
+            $this->name = $name;
+        }
+
+        if ($this->description != $description) {
+            $this->description = $description;
+        }
+
+        if ($this->due_at != $dueDate) {
+            $this->due_at = $dueDate;
+        }
+
+        if ($this->status != $status) {
+            $this->status = $status;
+        }
+
+        if (is_null($assignee)) {
+            $this->removeAssignee();
+        } elseif ($this->assignee_id != $assignee) {
+            $this->setAssignee($assignee);
+        }
+
+        $this->raise(new TicketWasEdited($this));
+
+        return $this->getDirty();
     }
 
     public function setProject(Project $project)

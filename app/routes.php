@@ -48,9 +48,7 @@ Route::get('/project/{projectId}/ticket/create', ['uses' => 'Portico\Task\Http\C
 Route::post('/project/{projectId}/ticket/create', ['uses' => 'Portico\Task\Http\Controller\Ticket\Create@handle', 'as' => 'ticket.create']);
 
 Route::get('/project/{objectId}/ticket/{ticketId}/view', ['uses' => 'Portico\Task\Http\Controller\Ticket\View@show', 'as' => 'ticket.view']);
-
-
-Route::post('/project/{objectId}/ticket/{ticketId}/close', ['uses' => 'Portico\Task\Http\Controller\Ticket\Manager@close', 'as' => 'ticket.close']);
+Route::post('/project/{objectId}/ticket/{ticketId}/edit', ['uses' => 'Portico\Task\Http\Controller\Ticket\Edit@edit', 'as' => 'ticket.edit']);
 Route::post('/project/{objectId}/ticket/{ticketId}/add-comment', ['uses' => 'Portico\Task\Http\Controller\Comment\Create@handle', 'as' => 'ticket.comment.add']);
 
 ## Admin Routes
