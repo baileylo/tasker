@@ -25,4 +25,18 @@ class Eloquent implements UserRepository
     }
 
 
-} 
+    /**
+     * @param int   $id
+     * @param array $relationships
+     *
+     * @return User|null
+     */
+    public function findById($id, array $relationships = [])
+    {
+        if (!$id) {
+            return null;
+        }
+
+        return $this->orm->with($relationships)->find($id);
+    }
+}
