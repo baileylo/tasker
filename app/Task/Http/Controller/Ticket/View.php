@@ -4,6 +4,7 @@ use Controller, App, View as Template;
 use Illuminate\Session\Store as SessionStore;
 use Illuminate\Support\ViewErrorBag;
 use Portico\Task\Ticket\Ticket;
+use Portico\Task\ViewHelpers\Views\ShowTicket\FormViewHelper;
 
 class View extends Controller
 {
@@ -34,9 +35,11 @@ class View extends Controller
          * @var ViewErrorBag $errors
          */
         $errors = $this->session->get('errors', new ViewErrorBag());
-        $closeTicketErrors = $errors->getBag('closeTicket');
+        $editErrors = $errors->getBag('editTicketErrors');
         $commentErrors = $errors->getBag('addComment');
 
-        return Template::make('ticket.show', compact('ticket', 'closeTicketErrors', 'commentErrors'));
+        $helper = new FormViewHelper($editErrors, $commentErrors);
+
+        return Template::make('ticket.show', compact('ticket', 'editErrors', 'commentErrors', 'helper'));
     }
 } 
