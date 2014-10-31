@@ -12,6 +12,6 @@ jScript.add('toggle', function() {
             link.addClass('hidden');
         }
 
-        $(link.data('toggleSelector')).removeClass('hidden');
+        $(link.data('toggleSelector')).removeClass('hidden').addClass('show');
     });
 });
